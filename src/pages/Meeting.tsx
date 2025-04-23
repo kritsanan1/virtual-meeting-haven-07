@@ -7,6 +7,7 @@ import ControlPanel from '@/components/ControlPanel';
 import { useToast } from '@/hooks/use-toast';
 import { useMediaStream } from '@/hooks/use-media-stream';
 import ParticipantInfo from '@/components/ParticipantInfo';
+import { Chat } from '@/components/Chat';
 
 const Meeting = () => {
   const { id } = useParams<{ id: string }>();
@@ -88,6 +89,7 @@ const Meeting = () => {
           <p className="text-sm text-gray-500">Joined as {name}</p>
         </div>
         <div className="flex items-center gap-2">
+          <Chat userName={name} />
           <ParticipantInfo participants={participants} />
           <Button 
             variant="destructive" 
