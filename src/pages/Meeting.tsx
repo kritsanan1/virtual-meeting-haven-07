@@ -4,7 +4,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import VideoPlayer from '@/components/VideoPlayer';
 import ControlPanel from '@/components/ControlPanel';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { useMediaStream } from '@/hooks/use-media-stream';
 import ParticipantInfo from '@/components/ParticipantInfo';
 
