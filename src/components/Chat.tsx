@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -20,6 +20,15 @@ interface ChatProps {
 export const Chat: React.FC<ChatProps> = ({ userName }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Auto scroll to bottom when messages change
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
 
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,7 +62,7 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
           <DrawerTitle>Chat</DrawerTitle>
         </DrawerHeader>
         <div className="p-4 flex flex-col h-[60vh]">
-          <ScrollArea className="flex-1 mb-4">
+          <ScrollArea className="flex-1 mb-4" ref={scrollAreaRef}>
             <div className="space-y-4">
               {messages.map((message) => (
                 <div
@@ -77,6 +86,8 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
                   </div>
                 </div>
               ))}
+              {/* This empty div is used as a reference for scrolling to the bottom */}
+              <div ref={messagesEndRef} />
             </div>
           </ScrollArea>
           <form onSubmit={sendMessage} className="flex gap-2">
