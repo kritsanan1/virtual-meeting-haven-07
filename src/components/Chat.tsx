@@ -5,22 +5,10 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { MessageCircle, Send, PenLine, Square, ExternalLink, X, MoreVertical, Reply, Mic, MicOff, Save, Trash } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, DrawerClose } from '@/components/ui/drawer';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from '@/hooks/use-toast';
-
 interface Message {
   id: string;
   sender: string;
@@ -31,12 +19,12 @@ interface Message {
   replies?: Message[];
   isAudio?: boolean;
 }
-
 interface ChatProps {
   userName: string;
 }
-
-export const Chat: React.FC<ChatProps> = ({ userName }) => {
+export const Chat: React.FC<ChatProps> = ({
+  userName
+}) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [replyingTo, setReplyingTo] = useState<Message | null>(null);
@@ -49,14 +37,16 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<number | null>(null);
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      messagesEndRef.current.scrollIntoView({
+        behavior: 'smooth'
+      });
     }
   }, [messages]);
-
   useEffect(() => {
     return () => {
       if (timerRef.current) {
@@ -70,20 +60,19 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
       }
     };
   }, [isRecording]);
-
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true
+      });
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
       audioChunksRef.current = [];
-
-      mediaRecorder.ondataavailable = (event) => {
+      mediaRecorder.ondataavailable = event => {
         if (event.data.size > 0) {
           audioChunksRef.current.push(event.data);
         }
       };
-
       mediaRecorder.onstop = () => {
         if (audioChunksRef.current.length === 0) {
           toast({
@@ -93,10 +82,10 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
           });
           return;
         }
-
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        const audioBlob = new Blob(audioChunksRef.current, {
+          type: 'audio/webm'
+        });
         const audioUrl = URL.createObjectURL(audioBlob);
-        
         const message: Message = {
           id: Date.now().toString(),
           sender: userName,
@@ -107,7 +96,6 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
           replies: [],
           isAudio: true
         };
-
         setMessages(prev => {
           const newMessages = [...prev];
           if (replyingTo) {
@@ -119,7 +107,6 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
           }
           return [...prev, message];
         });
-
         stream.getTracks().forEach(track => track.stop());
         setRecordingTime(0);
         if (timerRef.current) {
@@ -127,8 +114,7 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
           timerRef.current = null;
         }
       };
-
-      mediaRecorder.onerror = (event) => {
+      mediaRecorder.onerror = event => {
         console.error("MediaRecorder error:", event);
         toast({
           title: "Recording Error",
@@ -137,14 +123,11 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
         });
         setIsRecording(false);
       };
-
       mediaRecorder.start();
       setIsRecording(true);
-      
       timerRef.current = window.setInterval(() => {
         setRecordingTime(prevTime => prevTime + 1);
       }, 1000);
-      
     } catch (error) {
       console.error('Error accessing microphone:', error);
       toast({
@@ -154,7 +137,6 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
       });
     }
   };
-
   const stopRecording = () => {
     if (mediaRecorderRef.current && isRecording) {
       try {
@@ -171,21 +153,17 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
       }
     }
   };
-
   const formatRecordingTime = () => {
     const minutes = Math.floor(recordingTime / 60);
     const seconds = recordingTime % 60;
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
-
   const handleEditMessage = () => {
     setIsEditing(!isEditing);
   };
-
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMessage.trim() && !isRecording) return;
-
     const message: Message = {
       id: Date.now().toString(),
       sender: userName,
@@ -193,10 +171,9 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
       content: newMessage,
       timestamp: new Date(),
       replyTo: replyingTo?.id,
-      replies: [],
+      replies: []
     };
-
-    setMessages((prev) => {
+    setMessages(prev => {
       const newMessages = [...prev];
       if (replyingTo) {
         const parentMessage = newMessages.find(m => m.id === replyingTo.id);
@@ -207,15 +184,12 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
       }
       return [...prev, message];
     });
-    
     setNewMessage('');
     setReplyingTo(null);
   };
-
   const handleReply = (message: Message) => {
     setReplyingTo(message);
   };
-
   const openInNewWindow = () => {
     const width = 400;
     const height = 600;
@@ -223,22 +197,24 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
     const top = window.screen.height / 2 - height / 2;
     window.open('', 'Chat', `width=${width},height=${height},left=${left},top=${top}`);
   };
-
   const clearChat = () => {
     setMessages([]);
     toast({
       title: "Chat cleared",
-      description: "All messages have been removed",
+      description: "All messages have been removed"
     });
   };
-
   const saveChat = () => {
     const chatContent = messages.map(msg => {
-      const time = msg.timestamp.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      const time = msg.timestamp.toLocaleTimeString([], {
+        hour: 'numeric',
+        minute: '2-digit'
+      });
       return `[${time}] ${msg.sender} to ${msg.recipient}: ${msg.content}`;
     }).join('\n');
-
-    const blob = new Blob([chatContent], { type: 'text/plain' });
+    const blob = new Blob([chatContent], {
+      type: 'text/plain'
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -247,27 +223,18 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-
     toast({
       title: "Chat saved",
-      description: "Chat history has been downloaded",
+      description: "Chat history has been downloaded"
     });
   };
-
-  return (
-    <Drawer>
+  return <Drawer>
       <DrawerTrigger asChild>
-        <Button 
-          variant="outline" 
-          size="icon" 
-          className="relative hover:bg-meeting-primary/10 transition-colors"
-        >
+        <Button variant="outline" size="icon" className="relative hover:bg-meeting-primary/10 transition-colors">
           <MessageCircle className="h-5 w-5 text-meeting-primary" />
-          {messages.length > 0 && (
-            <span className="absolute -top-1 -right-1 bg-meeting-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+          {messages.length > 0 && <span className="absolute -top-1 -right-1 bg-meeting-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
               {messages.length}
-            </span>
-          )}
+            </span>}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="p-0 max-h-[90vh]">
@@ -308,8 +275,7 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
         <div className="flex flex-col h-[calc(100vh-200px)]">
           <ScrollArea className="flex-1" ref={scrollAreaRef}>
             <div className="p-4 space-y-6">
-              {messages.map((message) => (
-                <div key={message.id} className="space-y-4">
+              {messages.map(message => <div key={message.id} className="space-y-4">
                   <div className="flex items-start gap-3">
                     <Avatar className="w-8 h-8">
                       <AvatarFallback className="bg-meeting-primary text-white">
@@ -322,29 +288,22 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
                           {message.sender === userName ? "You" : message.sender} to {message.recipient === 'everyone' ? 'Everyone' : message.recipient}
                         </span>
                         <span className="text-sm text-gray-500">
-                          {message.timestamp.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
+                          {message.timestamp.toLocaleTimeString([], {
+                        hour: 'numeric',
+                        minute: '2-digit'
+                      })}
                         </span>
                       </div>
-                      {message.isAudio ? (
-                        <div className="mt-2">
+                      {message.isAudio ? <div className="mt-2">
                           <audio src={message.content} controls className="w-full max-w-[250px] h-10" />
-                        </div>
-                      ) : (
-                        <p className="mt-1 text-gray-700">{message.content}</p>
-                      )}
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="mt-1 text-blue-600 hover:text-blue-700 p-0 h-auto font-normal"
-                        onClick={() => handleReply(message)}
-                      >
+                        </div> : <p className="mt-1 text-gray-700">{message.content}</p>}
+                      <Button variant="ghost" size="sm" className="mt-1 text-blue-600 hover:text-blue-700 p-0 h-auto font-normal" onClick={() => handleReply(message)}>
                         <Reply className="h-4 w-4 mr-1" />
                         Reply
                       </Button>
                     </div>
                   </div>
-                  {message.replies?.map((reply) => (
-                    <div key={reply.id} className="ml-8 flex items-start gap-3">
+                  {message.replies?.map(reply => <div key={reply.id} className="ml-8 flex items-start gap-3">
                       <Avatar className="w-8 h-8">
                         <AvatarFallback className="bg-meeting-primary text-white">
                           {reply.sender[0].toUpperCase()}
@@ -356,45 +315,32 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
                             {message.sender === userName ? "You" : message.sender} to {message.recipient === 'everyone' ? 'Everyone' : message.recipient}
                           </span>
                           <span className="text-sm text-gray-500">
-                            {reply.timestamp.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
+                            {reply.timestamp.toLocaleTimeString([], {
+                        hour: 'numeric',
+                        minute: '2-digit'
+                      })}
                           </span>
                         </div>
-                        {reply.isAudio ? (
-                          <div className="mt-2">
+                        {reply.isAudio ? <div className="mt-2">
                             <audio src={reply.content} controls className="w-full max-w-[250px] h-10" />
-                          </div>
-                        ) : (
-                          <p className="mt-1 text-gray-700">{reply.content}</p>
-                        )}
+                          </div> : <p className="mt-1 text-gray-700">{reply.content}</p>}
                       </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
+                    </div>)}
+                </div>)}
               <div ref={messagesEndRef} />
             </div>
           </ScrollArea>
           <div className="p-4 border-t bg-white">
             <div className="bg-gray-50 rounded-lg p-2">
-              {replyingTo && (
-                <div className="mb-2 px-2 py-1 bg-gray-100 rounded flex items-center justify-between">
+              {replyingTo && <div className="mb-2 px-2 py-1 bg-gray-100 rounded flex items-center justify-between">
                   <span className="text-sm text-gray-600">Replying to message</span>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="h-6 w-6" 
-                    onClick={() => setReplyingTo(null)}
-                  >
+                  <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setReplyingTo(null)}>
                     <X className="h-4 w-4" />
                   </Button>
-                </div>
-              )}
-              <div className="mb-2 px-2">
-                <Select
-                  value={recipient}
-                  onValueChange={setRecipient}
-                >
-                  <SelectTrigger className="w-[140px] h-8 text-sm">
+                </div>}
+              <div className="mb-2 px-0">
+                <Select value={recipient} onValueChange={setRecipient}>
+                  <SelectTrigger className="w-[140px] h-8 text-sm px-[9px]">
                     <SelectValue placeholder="To: Everyone" />
                   </SelectTrigger>
                   <SelectContent>
@@ -405,56 +351,20 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
                 </Select>
               </div>
               <form onSubmit={sendMessage} className="flex flex-col gap-2">
-                {isEditing ? (
-                  <Textarea
-                    placeholder="Type message here..."
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    className="bg-transparent border-0 shadow-none focus-visible:ring-0 px-2 text-gray-700 min-h-[80px]"
-                    disabled={isRecording}
-                  />
-                ) : (
-                  <Input
-                    placeholder="Type message here..."
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    className="bg-transparent border-0 shadow-none focus-visible:ring-0 px-2 text-gray-700"
-                    disabled={isRecording}
-                  />
-                )}
+                {isEditing ? <Textarea placeholder="Type message here..." value={newMessage} onChange={e => setNewMessage(e.target.value)} className="bg-transparent border-0 shadow-none focus-visible:ring-0 px-2 text-gray-700 min-h-[80px]" disabled={isRecording} /> : <Input placeholder="Type message here..." value={newMessage} onChange={e => setNewMessage(e.target.value)} className="bg-transparent border-0 shadow-none focus-visible:ring-0 px-2 text-gray-700" disabled={isRecording} />}
                 <div className="flex items-center justify-between px-2">
                   <div className="flex gap-2 items-center">
-                    <Button 
-                      type="button" 
-                      variant="ghost" 
-                      size="icon" 
-                      className="text-gray-500"
-                      onClick={handleEditMessage}
-                      disabled={isRecording}
-                    >
+                    <Button type="button" variant="ghost" size="icon" className="text-gray-500" onClick={handleEditMessage} disabled={isRecording}>
                       <PenLine className="h-4 w-4" />
                     </Button>
-                    <Button 
-                      type="button" 
-                      variant="ghost" 
-                      size="icon" 
-                      className={`text-gray-500 ${isRecording ? 'bg-red-100' : ''}`}
-                      onClick={isRecording ? stopRecording : startRecording}
-                    >
+                    <Button type="button" variant="ghost" size="icon" className={`text-gray-500 ${isRecording ? 'bg-red-100' : ''}`} onClick={isRecording ? stopRecording : startRecording}>
                       {isRecording ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
                     </Button>
-                    {isRecording && (
-                      <span className="text-red-500 text-xs animate-pulse">
+                    {isRecording && <span className="text-red-500 text-xs animate-pulse">
                         Recording {formatRecordingTime()}
-                      </span>
-                    )}
+                      </span>}
                   </div>
-                  <Button 
-                    type="submit"
-                    size="icon"
-                    className="bg-meeting-primary hover:bg-meeting-primary/90"
-                    disabled={isRecording || (!newMessage.trim().length && !isRecording)}
-                  >
+                  <Button type="submit" size="icon" className="bg-meeting-primary hover:bg-meeting-primary/90" disabled={isRecording || !newMessage.trim().length && !isRecording}>
                     <Send className="h-4 w-4" />
                   </Button>
                 </div>
@@ -463,6 +373,5 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
           </div>
         </div>
       </DrawerContent>
-    </Drawer>
-  );
+    </Drawer>;
 };
