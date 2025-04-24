@@ -30,6 +30,15 @@ export const useChat = (userName: string) => {
   }, [isRecording]);
 
   const startRecording = async () => {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      toast({
+        title: "Browser Not Supported",
+        description: "Your browser doesn't support audio recording. Please try a modern browser like Chrome or Firefox.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
@@ -84,6 +93,7 @@ export const useChat = (userName: string) => {
           window.clearInterval(timerRef.current);
           timerRef.current = null;
         }
+        setIsRecording(false);
       };
 
       mediaRecorder.onerror = event => {
@@ -102,13 +112,26 @@ export const useChat = (userName: string) => {
         setRecordingTime(prevTime => prevTime + 1);
       }, 1000);
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error accessing microphone:', error);
+      
+      let errorMessage = "Please grant permission to use your microphone or check if your device has one connected.";
+      
+      // Provide more specific error messages based on the error
+      if (error.name === "NotAllowedError") {
+        errorMessage = "Microphone access was denied. Please allow microphone access in your browser settings and try again.";
+      } else if (error.name === "NotFoundError") {
+        errorMessage = "No microphone detected. Please connect a microphone and try again.";
+      } else if (error.name === "NotReadableError") {
+        errorMessage = "Your microphone is busy or not functioning properly. Please try again later.";
+      }
+      
       toast({
-        title: "Microphone Access Denied",
-        description: "Please grant permission to use your microphone or check if your device has one connected.",
+        title: "Microphone Access Error",
+        description: errorMessage,
         variant: "destructive"
       });
+      setIsRecording(false);
     }
   };
 
@@ -116,7 +139,6 @@ export const useChat = (userName: string) => {
     if (mediaRecorderRef.current && isRecording) {
       try {
         mediaRecorderRef.current.stop();
-        setIsRecording(false);
       } catch (error) {
         console.error('Error stopping recording:', error);
         toast({
