@@ -59,7 +59,6 @@ const ScheduleMeeting = () => {
   const [attendees, setAttendees] = useState<Attendee[]>([]);
   const [attendeeInput, setAttendeeInput] = useState('');
   const [showTrialDialog, setShowTrialDialog] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
   
@@ -209,7 +208,7 @@ const ScheduleMeeting = () => {
                   <Button
                     variant="outline"
                     className={cn(
-                      "justify-start text-left font-normal md:w-[200px] w-full transition-colors duration-200",
+                      "justify-start text-left font-normal md:w-[200px] w-full",
                       !date && "text-muted-foreground"
                     )}
                   >
@@ -333,42 +332,16 @@ const ScheduleMeeting = () => {
                   <FormItem>
                     <Select
                       value={field.value}
-                      onValueChange={(value) => {
-                        field.onChange(value);
-                        setSelectedOption(value);
-                      }}
+                      onValueChange={field.onChange}
                     >
-                      <SelectTrigger className={cn(
-                        "w-[150px] transition-colors duration-200",
-                        selectedOption === field.value ? "bg-primary text-white" : "hover:text-white"
-                      )}>
+                      <SelectTrigger className="w-[150px]">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem 
-                          value="never"
-                          className="transition-colors duration-200 hover:text-white hover:bg-primary/90"
-                        >
-                          Never
-                        </SelectItem>
-                        <SelectItem 
-                          value="daily"
-                          className="transition-colors duration-200 hover:text-white hover:bg-primary/90"
-                        >
-                          Daily
-                        </SelectItem>
-                        <SelectItem 
-                          value="weekly"
-                          className="transition-colors duration-200 hover:text-white hover:bg-primary/90"
-                        >
-                          Weekly
-                        </SelectItem>
-                        <SelectItem 
-                          value="monthly"
-                          className="transition-colors duration-200 hover:text-white hover:bg-primary/90"
-                        >
-                          Monthly
-                        </SelectItem>
+                        <SelectItem value="never">Never</SelectItem>
+                        <SelectItem value="daily">Daily</SelectItem>
+                        <SelectItem value="weekly">Weekly</SelectItem>
+                        <SelectItem value="monthly">Monthly</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormItem>
