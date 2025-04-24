@@ -23,7 +23,7 @@ export function ConnectionBanners({
           <button className={`bg-meeting-primary hover:bg-meeting-primary/90 text-white text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${className}`} onClick={onActivateFreeTrial}>
             FREE TRIAL
           </button>
-          <span className="font-medium text-meeting-primary text-[140342]">
+          <span className="text-meeting-primary font-medium text-base">
             Set up a Zoom Scheduler booking page for others to easily book with you—free for 14 days!{" "}
             <button className={`text-meeting-primary underline hover:bg-meeting-primary hover:text-white transition-colors ${className}`} onClick={onActivateFreeTrial}>
               Try Now
