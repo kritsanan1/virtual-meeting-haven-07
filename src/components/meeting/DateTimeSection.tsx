@@ -75,6 +75,7 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
                     <SelectItem
                       key={i}
                       value={`${String(i).padStart(2, '0')}:00`}
+                      className="select-item"
                     >
                       {`${String(i).padStart(2, '0')}:00`}
                     </SelectItem>
@@ -104,6 +105,7 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
                     <SelectItem
                       key={i}
                       value={`${String(i).padStart(2, '0')}:30`}
+                      className="select-item"
                     >
                       {`${String(i).padStart(2, '0')}:30`}
                     </SelectItem>
