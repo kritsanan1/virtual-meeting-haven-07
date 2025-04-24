@@ -6,32 +6,30 @@ import { Video, Users, Calendar } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-
 const Index = () => {
   const [meetingId, setMeetingId] = useState('');
   const [name, setName] = useState('');
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   const generateMeetingId = () => {
     return uuidv4().substring(0, 8);
   };
-
   const createNewMeeting = () => {
     const newMeetingId = generateMeetingId();
     setMeetingId(newMeetingId);
     toast({
       title: "Meeting created!",
-      description: `Your meeting ID is: ${newMeetingId}`,
+      description: `Your meeting ID is: ${newMeetingId}`
     });
   };
-
   const joinMeeting = (e: React.FormEvent) => {
     e.preventDefault();
     if (!meetingId.trim()) {
       toast({
         title: "Error",
         description: "Please enter a meeting ID",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
@@ -39,21 +37,19 @@ const Index = () => {
       toast({
         title: "Error",
         description: "Please enter your name",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
   };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-gray-100">
+  return <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-gray-100">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#07563c] via-[#0a724f] to-[#0d8b61] mb-6">
               Virtual Meeting Haven
             </h1>
-            <p className="text-xl text-[#07563c]/80 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl max-w-2xl mx-auto leading-relaxed text-[#140342]">
               Connect with anyone, anywhere with our secure, high-quality video conferencing platform.
             </p>
           </div>
@@ -71,13 +67,7 @@ const Index = () => {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-sm font-medium">Your Name</label>
-                    <Input 
-                      id="name"
-                      type="text" 
-                      placeholder="Enter your name" 
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                    />
+                    <Input id="name" type="text" placeholder="Enter your name" value={name} onChange={e => setName(e.target.value)} />
                   </div>
                 </div>
               </CardContent>
@@ -85,19 +75,17 @@ const Index = () => {
                 <Button variant="outline" onClick={createNewMeeting}>
                   Generate ID
                 </Button>
-                {name && meetingId ? (
-                  <Link to={`/meeting/${meetingId}?name=${encodeURIComponent(name)}`}>
+                {name && meetingId ? <Link to={`/meeting/${meetingId}?name=${encodeURIComponent(name)}`}>
                     <Button>
                       Start Meeting
                     </Button>
-                  </Link>
-                ) : (
-                  <Button disabled={!name}>Start Meeting</Button>
-                )}
+                  </Link> : <Button disabled={!name}>Start Meeting</Button>}
               </CardFooter>
             </Card>
 
-            <Card className="shadow-lg animate-fade-in" style={{ animationDelay: '0.1s' }}>
+            <Card className="shadow-lg animate-fade-in" style={{
+            animationDelay: '0.1s'
+          }}>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Users className="h-5 w-5 text-meeting-accent" />
@@ -109,34 +97,18 @@ const Index = () => {
                 <form onSubmit={joinMeeting} className="space-y-4">
                   <div className="space-y-2">
                     <label htmlFor="join-name" className="text-sm font-medium">Your Name</label>
-                    <Input 
-                      id="join-name"
-                      type="text" 
-                      placeholder="Enter your name" 
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                    />
+                    <Input id="join-name" type="text" placeholder="Enter your name" value={name} onChange={e => setName(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="meeting-id" className="text-sm font-medium">Meeting ID</label>
-                    <Input 
-                      id="meeting-id"
-                      type="text" 
-                      placeholder="Enter meeting ID" 
-                      value={meetingId}
-                      onChange={(e) => setMeetingId(e.target.value)}
-                    />
+                    <Input id="meeting-id" type="text" placeholder="Enter meeting ID" value={meetingId} onChange={e => setMeetingId(e.target.value)} />
                   </div>
                 </form>
               </CardContent>
               <CardFooter>
-                {name && meetingId ? (
-                  <Link to={`/meeting/${meetingId}?name=${encodeURIComponent(name)}`} className="w-full">
+                {name && meetingId ? <Link to={`/meeting/${meetingId}?name=${encodeURIComponent(name)}`} className="w-full">
                     <Button className="w-full">Join Meeting</Button>
-                  </Link>
-                ) : (
-                  <Button className="w-full" disabled={!name || !meetingId}>Join Meeting</Button>
-                )}
+                  </Link> : <Button className="w-full" disabled={!name || !meetingId}>Join Meeting</Button>}
               </CardFooter>
             </Card>
           </div>
@@ -173,8 +145,6 @@ const Index = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
