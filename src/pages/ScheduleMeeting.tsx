@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
@@ -297,10 +296,25 @@ const ScheduleMeeting = () => {
                         <SelectTrigger className="w-full">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="PST">Pakistan Standard Time</SelectItem>
-                          <SelectItem value="EST">Eastern Time</SelectItem>
-                          <SelectItem value="UTC">UTC</SelectItem>
+                        <SelectContent className="bg-white">
+                          <SelectItem 
+                            value="PST"
+                            className="data-[state=checked]:bg-blue-600 data-[state=checked]:text-white hover:bg-blue-50"
+                          >
+                            Pakistan Standard Time
+                          </SelectItem>
+                          <SelectItem 
+                            value="EST"
+                            className="data-[state=checked]:bg-blue-600 data-[state=checked]:text-white hover:bg-blue-50"
+                          >
+                            Eastern Time
+                          </SelectItem>
+                          <SelectItem 
+                            value="UTC"
+                            className="data-[state=checked]:bg-blue-600 data-[state=checked]:text-white hover:bg-blue-50"
+                          >
+                            UTC
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </FormItem>
