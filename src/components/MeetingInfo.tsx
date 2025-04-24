@@ -2,7 +2,8 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Info, X } from "lucide-react";
+import { Copy, Info, X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface MeetingInfoProps {
   meetingId: string;
@@ -10,6 +11,28 @@ interface MeetingInfoProps {
 
 const MeetingInfo: React.FC<MeetingInfoProps> = ({ meetingId }) => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const { toast } = useToast();
+  const currentDate = new Date();
+  const meetingPassword = "Ceu98P";
+  const participantId = "626032";
+  const host = "Musaver";
+  
+  const formattedTime = `${currentDate.toLocaleString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true
+  })}`;
+
+  const handleCopy = (text: string, type: string) => {
+    navigator.clipboard.writeText(text);
+    toast({
+      title: "Copied!",
+      description: `${type} has been copied to clipboard`,
+    });
+  };
 
   return (
     <>
@@ -38,29 +61,56 @@ const MeetingInfo: React.FC<MeetingInfoProps> = ({ meetingId }) => {
             </div>
           </DialogHeader>
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Musaver's Meeting</h2>
-            <p className="text-sm text-gray-500">
-              {new Date().toLocaleDateString('en-US', { 
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                hour12: true
-              })}
-            </p>
-            <div className="space-y-2">
-              <div className="flex justify-between">
+            <div>
+              <h2 className="text-xl font-semibold">Musaver's Meeting</h2>
+              <p className="text-sm text-gray-500">{formattedTime}</p>
+            </div>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
                 <span className="text-gray-500">Meeting ID</span>
-                <span>{meetingId}</span>
+                <div className="flex items-center gap-2">
+                  <span>{meetingId}</span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    onClick={() => handleCopy(meetingId, "Meeting ID")}
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Invite link</span>
-                <a href="#" className="text-blue-500">Copy link</a>
-              </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span className="text-gray-500">Passcode</span>
-                <span>Ceu98P</span>
+                <div className="flex items-center gap-2">
+                  <span>{meetingPassword}</span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    onClick={() => handleCopy(meetingPassword, "Password")}
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-500">Host</span>
+                <span>{host}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-500">Participant ID</span>
+                <span>{participantId}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-500">Invite link</span>
+                <Button
+                  variant="link"
+                  className="text-blue-500 p-0 h-auto"
+                  onClick={() => handleCopy(`https://us04web.zoom.us/j/${meetingId}`, "Invite link")}
+                >
+                  Copy link
+                </Button>
               </div>
             </div>
           </div>
