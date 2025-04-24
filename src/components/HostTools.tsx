@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { Shield } from 'lucide-react';
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface HostToolsProps {
   isHost: boolean;
@@ -31,44 +33,99 @@ const HostTools: React.FC<HostToolsProps> = ({ isHost }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="rounded-full h-12 w-12">
-          <span className="sr-only">Host tools</span>
-          🛡️
+        <Button variant="outline" size="icon" className="rounded-full h-12 w-12 bg-white hover:bg-gray-100">
+          <Shield className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-64">
+      <DropdownMenuContent className="w-80">
         <DropdownMenuLabel>Meeting Controls</DropdownMenuLabel>
-        <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={() => handlePermissionChange("Lock meeting")}>
             Lock meeting
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handlePermissionChange("Waiting room")}>
+          <DropdownMenuItem onClick={() => handlePermissionChange("Enable waiting room")}>
             Enable waiting room
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handlePermissionChange("Profile pictures")}>
+          <DropdownMenuItem onClick={() => handlePermissionChange("Hide profile pictures")}>
             Hide profile pictures
           </DropdownMenuItem>
         </DropdownMenuGroup>
+
         <DropdownMenuSeparator />
-        <DropdownMenuLabel>Participant Permissions</DropdownMenuLabel>
+        
+        <DropdownMenuLabel>Allow all participants to:</DropdownMenuLabel>
+        <DropdownMenuGroup className="p-2 space-y-2">
+          <div className="flex items-center space-x-2">
+            <Checkbox id="share-screen" onCheckedChange={() => handlePermissionChange("Share screen")} />
+            <label htmlFor="share-screen">Share screen</label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox id="chat" defaultChecked onCheckedChange={() => handlePermissionChange("Chat")} />
+            <label htmlFor="chat">Chat</label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox id="rename" defaultChecked onCheckedChange={() => handlePermissionChange("Rename themselves")} />
+            <label htmlFor="rename">Rename themselves</label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox id="unmute" defaultChecked onCheckedChange={() => handlePermissionChange("Unmute themselves")} />
+            <label htmlFor="unmute">Unmute themselves</label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox id="start-video" defaultChecked onCheckedChange={() => handlePermissionChange("Start video")} />
+            <label htmlFor="start-video">Start video</label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox id="share-docs" defaultChecked onCheckedChange={() => handlePermissionChange("Share documents")} />
+            <label htmlFor="share-docs">Share documents</label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox id="share-whiteboard" defaultChecked onCheckedChange={() => handlePermissionChange("Share whiteboards")} />
+            <label htmlFor="share-whiteboard">Share whiteboards</label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox id="share-notes" defaultChecked onCheckedChange={() => handlePermissionChange("Share notes")} />
+            <label htmlFor="share-notes">Share notes</label>
+          </div>
+        </DropdownMenuGroup>
+
+        <DropdownMenuSeparator />
+        
+        <DropdownMenuLabel>Recording Options</DropdownMenuLabel>
+        <DropdownMenuGroup className="p-2 space-y-2">
+          <div className="flex items-center space-x-2">
+            <Checkbox id="record" onCheckedChange={() => handlePermissionChange("Record to computer")} />
+            <label htmlFor="record">Record to computer</label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox id="request-record" defaultChecked onCheckedChange={() => handlePermissionChange("Request to record")} />
+            <label htmlFor="request-record">Request to record to computer</label>
+          </div>
+        </DropdownMenuGroup>
+
+        <DropdownMenuSeparator />
+        
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => handlePermissionChange("Screen sharing")}>
-            Share screen
+          <DropdownMenuItem onClick={() => handlePermissionChange("Collaborate with Apps")}>
+            Collaborate with Apps
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handlePermissionChange("Chat")}>
-            Chat
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handlePermissionChange("Rename")}>
-            Rename themselves
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handlePermissionChange("Video")}>
-            Start video
+          <DropdownMenuItem onClick={() => handlePermissionChange("Set meeting timers")}>
+            Set meeting timers
           </DropdownMenuItem>
         </DropdownMenuGroup>
+
+        <DropdownMenuSeparator />
+        
+        <DropdownMenuItem 
+          className="text-red-500 focus:text-red-500" 
+          onClick={() => handlePermissionChange("Suspend participant activities")}
+        >
+          Suspend participant activities
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
 
 export default HostTools;
+
