@@ -1,7 +1,7 @@
 
 interface ConnectionBannersProps {
   onActivateFreeTrial: () => void;
-  className?: string; // Add optional className prop
+  className?: string;
 }
 
 export function ConnectionBanners({ 
@@ -9,14 +9,14 @@ export function ConnectionBanners({
   className 
 }: ConnectionBannersProps) {
   return (
-    <div className="mb-8">
-      <div className="bg-blue-50 rounded-lg p-4 mb-4">
-        <div className="flex items-center gap-2 text-blue-600">
-          <span className="text-sm">
+    <div className="space-y-4">
+      <div className="bg-blue-50 rounded-xl p-6 border border-blue-100">
+        <div className="flex items-center gap-3 text-blue-700">
+          <span className="text-sm font-medium">
             Connect your calendar to manage all your events in one place and experience all advanced features!{" "}
             <a 
               href="#" 
-              className={`underline hover:text-white ${className}`}
+              className={`underline hover:text-white transition-colors ${className}`}
             >
               Connect
             </a>
@@ -24,18 +24,18 @@ export function ConnectionBanners({
         </div>
       </div>
       
-      <div className="bg-blue-50 rounded-lg p-4">
-        <div className="flex items-center gap-2">
+      <div className="bg-blue-50 rounded-xl p-6 border border-blue-100">
+        <div className="flex items-center gap-3">
           <button 
-            className={`bg-blue-600 hover:bg-blue-700 text-white text-xs px-2 py-1 rounded h-auto hover:text-white ${className}`}
+            className={`bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${className}`}
             onClick={onActivateFreeTrial}
           >
             FREE TRIAL
           </button>
-          <span className="text-sm">
+          <span className="text-sm font-medium text-blue-700">
             Set up a Zoom Scheduler booking page for others to easily book with you—free for 14 days!{" "}
             <button 
-              className={`text-blue-600 underline hover:text-white ${className}`} 
+              className={`text-blue-600 underline hover:text-white transition-colors ${className}`} 
               onClick={onActivateFreeTrial}
             >
               Try Now

@@ -46,19 +46,19 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-100">
+    <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-gray-100">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-meeting-primary to-meeting-accent mb-4">
+          <div className="text-center mb-16">
+            <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-meeting-primary via-meeting-accent to-meeting-secondary mb-6">
               Virtual Meeting Haven
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
               Connect with anyone, anywhere with our secure, high-quality video conferencing platform.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="grid md:grid-cols-2 gap-8 mb-16">
             <Card className="shadow-lg animate-fade-in">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -141,33 +141,33 @@ const Index = () => {
             </Card>
           </div>
 
-          <div className="text-center mb-8">
+          <div className="text-center mb-12">
             <Link to="/schedule">
-              <Button variant="outline" className="w-full md:w-auto">
+              <Button variant="outline" className="w-full md:w-auto transform transition-all hover:scale-105">
                 <Calendar className="w-4 h-4 mr-2" />
                 Schedule Meeting
               </Button>
             </Link>
           </div>
 
-          <div className="text-center space-y-2">
-            <h2 className="text-xl font-semibold">Features</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-              <div className="bg-white p-4 rounded-lg shadow">
-                <h3 className="font-medium text-meeting-primary">HD Video</h3>
-                <p className="text-sm text-gray-600">Crystal clear video quality</p>
+          <div className="text-center space-y-8">
+            <h2 className="text-2xl font-semibold text-gray-900">Features</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transform transition-all hover:shadow-md">
+                <h3 className="font-semibold text-meeting-primary mb-2">HD Video</h3>
+                <p className="text-gray-600">Crystal clear video quality</p>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow">
-                <h3 className="font-medium text-meeting-primary">Screen Sharing</h3>
-                <p className="text-sm text-gray-600">Share your screen instantly</p>
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transform transition-all hover:shadow-md">
+                <h3 className="font-semibold text-meeting-primary mb-2">Screen Sharing</h3>
+                <p className="text-gray-600">Share your screen instantly</p>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow">
-                <h3 className="font-medium text-meeting-primary">Audio Controls</h3>
-                <p className="text-sm text-gray-600">Easily mute and unmute</p>
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transform transition-all hover:shadow-md">
+                <h3 className="font-semibold text-meeting-primary mb-2">Audio Controls</h3>
+                <p className="text-gray-600">Easily mute and unmute</p>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow">
-                <h3 className="font-medium text-meeting-primary">Secure Meetings</h3>
-                <p className="text-sm text-gray-600">End-to-end encryption</p>
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transform transition-all hover:shadow-md">
+                <h3 className="font-semibold text-meeting-primary mb-2">Secure Meetings</h3>
+                <p className="text-gray-600">End-to-end encryption</p>
               </div>
             </div>
           </div>

@@ -84,23 +84,26 @@ const Meeting = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col">
       {/* Header with meeting info */}
-      <header className="bg-white shadow-sm py-3 px-4 flex justify-between items-center">
-        <div>
-          <h2 className="font-semibold text-lg text-meeting-dark">Meeting: {id}</h2>
-          <p className="text-sm text-gray-500">Joined as {name}</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Chat userName={name} />
-          <ParticipantInfo participants={participants} />
-          <Button 
-            variant="destructive" 
-            size="sm" 
-            onClick={leaveMeeting}
-          >
-            Leave
-          </Button>
+      <header className="bg-white shadow-sm border-b border-gray-200 py-4 px-6">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div>
+            <h2 className="font-semibold text-xl text-meeting-dark">Meeting: {id}</h2>
+            <p className="text-sm text-gray-500">Joined as {name}</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <Chat userName={name} />
+            <ParticipantInfo participants={participants} />
+            <Button 
+              variant="destructive" 
+              size="sm" 
+              onClick={leaveMeeting}
+              className="font-medium"
+            >
+              Leave
+            </Button>
+          </div>
         </div>
       </header>
 

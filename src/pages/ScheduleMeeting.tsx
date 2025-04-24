@@ -18,14 +18,22 @@ const ScheduleMeeting = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="container mx-auto max-w-3xl">
-        <ConnectionBanners 
-          onActivateFreeTrial={() => setShowTrialDialog(true)} 
-          className="hover:text-white" 
-        />
-        
-        <MeetingForm />
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      <div className="container mx-auto max-w-3xl px-4 py-8">
+        <div className="space-y-6">
+          <h1 className="text-3xl font-bold text-gray-900 text-center mb-8">
+            Schedule a Meeting
+          </h1>
+          
+          <ConnectionBanners 
+            onActivateFreeTrial={() => setShowTrialDialog(true)} 
+            className="hover:text-white" 
+          />
+          
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <MeetingForm />
+          </div>
+        </div>
 
         <TrialDialog
           open={showTrialDialog}
