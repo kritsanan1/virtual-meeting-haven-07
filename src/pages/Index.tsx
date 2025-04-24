@@ -50,10 +50,10 @@ const Index = () => {
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-meeting-primary via-meeting-accent to-meeting-secondary mb-6">
+            <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#07563c] via-[#0a724f] to-[#0d8b61] mb-6">
               Virtual Meeting Haven
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-[#07563c]/80 max-w-2xl mx-auto leading-relaxed">
               Connect with anyone, anywhere with our secure, high-quality video conferencing platform.
             </p>
           </div>
