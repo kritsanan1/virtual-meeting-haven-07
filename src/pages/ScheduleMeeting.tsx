@@ -22,7 +22,6 @@ const ScheduleMeeting = () => {
       <div className="container mx-auto max-w-3xl">
         <ConnectionBanners 
           onActivateFreeTrial={() => setShowTrialDialog(true)} 
-          // Add hover text color white to the buttons
           className="hover:text-white" 
         />
         
