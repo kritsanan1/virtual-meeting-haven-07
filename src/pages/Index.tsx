@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Link } from 'react-router-dom';
-import { Video, Users } from 'lucide-react';
+import { Video, Users, Calendar } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
@@ -139,6 +139,15 @@ const Index = () => {
                 )}
               </CardFooter>
             </Card>
+          </div>
+
+          <div className="text-center mb-8">
+            <Link to="/schedule">
+              <Button variant="outline" className="w-full md:w-auto">
+                <Calendar className="w-4 h-4 mr-2" />
+                Schedule Meeting
+              </Button>
+            </Link>
           </div>
 
           <div className="text-center space-y-2">
