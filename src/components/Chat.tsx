@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,6 +5,13 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { MessageCircle, Send, PenLine, Square, ExternalLink, X, MoreVertical, Reply, Mic, MicOff } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, DrawerClose } from '@/components/ui/drawer';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +24,7 @@ import { useToast } from '@/hooks/use-toast';
 interface Message {
   id: string;
   sender: string;
+  recipient: string;
   content: string;
   timestamp: Date;
   replyTo?: string;
@@ -36,6 +43,7 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
+  const [recipient, setRecipient] = useState('everyone');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -93,6 +101,7 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
         const message: Message = {
           id: Date.now().toString(),
           sender: userName,
+          recipient: recipient,
           content: audioUrl,
           timestamp: new Date(),
           replyTo: replyingTo?.id,
@@ -177,11 +186,12 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
 
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newMessage.trim()) return;
+    if (!newMessage.trim() && !isRecording) return;
 
     const message: Message = {
       id: Date.now().toString(),
       sender: userName,
+      recipient: recipient,
       content: newMessage,
       timestamp: new Date(),
       replyTo: replyingTo?.id,
@@ -275,7 +285,7 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <span className="font-medium text-gray-900">
-                          You to Everyone
+                          {message.sender === userName ? "You" : message.sender} to {message.recipient === 'everyone' ? 'Everyone' : message.recipient}
                         </span>
                         <span className="text-sm text-gray-500">
                           {message.timestamp.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
@@ -309,7 +319,7 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <span className="font-medium text-gray-900">
-                            You to Everyone
+                            {message.sender === userName ? "You" : message.sender} to {message.recipient === 'everyone' ? 'Everyone' : message.recipient}
                           </span>
                           <span className="text-sm text-gray-500">
                             {reply.timestamp.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
@@ -346,7 +356,19 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
                 </div>
               )}
               <div className="mb-2 px-2">
-                <span className="text-sm text-gray-600">To: Everyone</span>
+                <Select
+                  value={recipient}
+                  onValueChange={setRecipient}
+                >
+                  <SelectTrigger className="w-[140px] h-8 text-sm">
+                    <SelectValue placeholder="To: Everyone" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="everyone">Everyone</SelectItem>
+                    <SelectItem value="host">Host</SelectItem>
+                    <SelectItem value="participants">All Participants</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <form onSubmit={sendMessage} className="flex flex-col gap-2">
                 {isEditing ? (
