@@ -167,7 +167,7 @@ export const Chat: React.FC<ChatProps> = ({
           </ScrollArea>
 
           <div className="p-4 border-t bg-white">
-            <div className="bg-gray-50 rounded-lg p-2 py-[15px] px-0">
+            <div className="bg-gray-50 rounded-lg p-2 px-0 py-0">
               <div className="mb-2 px-[7px]">
                 <Select value={recipient} onValueChange={setRecipient}>
                   <SelectTrigger className="w-[140px] h-8 text-sm px-[9px]">
@@ -180,7 +180,7 @@ export const Chat: React.FC<ChatProps> = ({
                   </SelectContent>
                 </Select>
               </div>
-              <form onSubmit={sendMessage} className="flex flex-col gap-2">
+              <form onSubmit={sendMessage} className="flex flex-col gap-2 py-0 my-0">
                 {isEditing ? <Textarea placeholder="Type message here..." value={newMessage} onChange={e => setNewMessage(e.target.value)} className="bg-transparent border-0 shadow-none focus-visible:ring-0 px-2 text-gray-700 min-h-[80px]" disabled={isRecording} /> : <Input placeholder="Type message here..." value={newMessage} onChange={e => setNewMessage(e.target.value)} className="bg-transparent border-0 shadow-none focus-visible:ring-0 px-2 text-gray-700" disabled={isRecording} />}
                 <div className="flex items-center justify-between px-2">
                   <div className="flex gap-2 items-center">
