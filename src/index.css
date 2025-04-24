@@ -94,7 +94,6 @@
 }
 
 @layer components {
-  /* Custom styling for Select dropdown items */
   .select-content {
     @apply bg-white border rounded-md shadow-lg overflow-hidden;
   }
@@ -104,7 +103,7 @@
   }
 
   .select-item[data-highlighted] {
-    @apply outline outline-2 outline-gray-200 cursor-pointer;
+    @apply outline outline-2 outline-[#9b87f5] bg-transparent cursor-pointer;
   }
 
   .select-item[data-state="checked"] {
