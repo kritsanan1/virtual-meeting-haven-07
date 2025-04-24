@@ -1,9 +1,10 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Mic, MicOff, Video, VideoOff, ScreenShare, ScreenShareOff, Phone } from 'lucide-react';
 import HostTools from './HostTools';
 import Reactions from './Reactions';
+import MeetingInfo from './MeetingInfo';
+import PreviewOptions from './PreviewOptions';
 
 interface ControlPanelProps {
   isAudioEnabled: boolean;
@@ -26,9 +27,14 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   leaveMeeting,
   isHost = false,
 }) => {
+  const urlParams = new URLSearchParams(window.location.pathname);
+  const meetingId = urlParams.get('/meeting/') || '124567';
+
   return (
     <div className="control-bar fixed bottom-0 left-0 right-0 p-3 flex justify-center bg-white/80 backdrop-blur-sm">
       <div className="flex items-center gap-2 md:gap-4">
+        <MeetingInfo meetingId={meetingId} />
+        
         <Button
           onClick={toggleAudio}
           variant={isAudioEnabled ? "outline" : "destructive"}
@@ -57,6 +63,8 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
         </Button>
         
         <Reactions />
+        
+        <PreviewOptions />
         
         {isHost && <HostTools isHost={isHost} />}
         
