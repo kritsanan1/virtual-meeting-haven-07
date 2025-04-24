@@ -94,16 +94,12 @@
 }
 
 @layer components {
-  .select-content {
-    @apply bg-white border rounded-md shadow-lg overflow-hidden;
-  }
-
   .select-item {
     @apply relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors;
   }
 
   .select-item[data-highlighted] {
-    @apply outline outline-2 outline-[#9b87f5] bg-transparent cursor-pointer;
+    @apply bg-[#9b87f5] text-white outline-none;
   }
 
   .select-item[data-state="checked"] {
