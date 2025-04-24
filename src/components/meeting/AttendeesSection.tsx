@@ -55,7 +55,13 @@ export function AttendeesSection({
             }
           }}
         />
-        <Button type="button" onClick={handleAddAttendee}>Add</Button>
+        <Button 
+          type="button" 
+          onClick={handleAddAttendee}
+          className="bg-meeting-primary text-white hover:bg-meeting-primary/90"
+        >
+          Add
+        </Button>
       </div>
       
       {attendees.length > 0 && (
@@ -78,3 +84,4 @@ export function AttendeesSection({
     </div>
   );
 }
+

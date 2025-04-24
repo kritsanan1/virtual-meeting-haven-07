@@ -182,6 +182,7 @@ export function MeetingForm({ onSubmitSuccess }: MeetingFormProps) {
             type="button" 
             variant="outline"
             onClick={() => setShowMoreOptions(!showMoreOptions)}
+            className="hover:bg-meeting-primary hover:text-white"
           >
             {showMoreOptions ? "Hide Options" : "More Options"}
           </Button>
@@ -196,3 +197,4 @@ export function MeetingForm({ onSubmitSuccess }: MeetingFormProps) {
     </Form>
   );
 }
+
