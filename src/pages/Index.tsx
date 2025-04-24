@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,23 +7,21 @@ import { Video, Users, Calendar } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+
 const Index = () => {
   const [meetingId, setMeetingId] = useState('');
   const [name, setName] = useState('');
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
+
   const generateMeetingId = () => {
-    return uuidv4().substring(0, 8);
-  };
-  const createNewMeeting = () => {
-    const newMeetingId = generateMeetingId();
+    const newMeetingId = uuidv4().substring(0, 8);
     setMeetingId(newMeetingId);
     toast({
       title: "Meeting created!",
       description: `Your meeting ID is: ${newMeetingId}`
     });
   };
+
   const joinMeeting = (e: React.FormEvent) => {
     e.preventDefault();
     if (!meetingId.trim()) {
@@ -42,7 +41,9 @@ const Index = () => {
       return;
     }
   };
-  return <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-gray-100">
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-gray-100">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
@@ -58,7 +59,7 @@ const Index = () => {
             <Card className="shadow-lg animate-fade-in">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Video className="h-5 w-5 text-meeting-primary" />
+                  <Video className="h-5 w-5 text-[#07563c]" />
                   <span>New Meeting</span>
                 </CardTitle>
                 <CardDescription>Start a new meeting and invite others</CardDescription>
@@ -72,23 +73,31 @@ const Index = () => {
                 </div>
               </CardContent>
               <CardFooter className="flex justify-between">
-                <Button variant="outline" onClick={createNewMeeting}>
+                <Button 
+                  variant="outline" 
+                  onClick={generateMeetingId}
+                  className="hover:bg-[#07563c] hover:text-white transition-colors"
+                >
                   Generate ID
                 </Button>
-                {name && meetingId ? <Link to={`/meeting/${meetingId}?name=${encodeURIComponent(name)}`}>
-                    <Button>
+                {name && meetingId ? (
+                  <Link to={`/meeting/${meetingId}?name=${encodeURIComponent(name)}`}>
+                    <Button className="bg-[#07563c] hover:bg-[#07563c]/90">
                       Start Meeting
                     </Button>
-                  </Link> : <Button disabled={!name}>Start Meeting</Button>}
+                  </Link>
+                ) : (
+                  <Button disabled={!name} className="bg-[#07563c] hover:bg-[#07563c]/90">
+                    Start Meeting
+                  </Button>
+                )}
               </CardFooter>
             </Card>
 
-            <Card className="shadow-lg animate-fade-in" style={{
-            animationDelay: '0.1s'
-          }}>
+            <Card className="shadow-lg animate-fade-in" style={{ animationDelay: '0.1s' }}>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-meeting-accent" />
+                  <Users className="h-5 w-5 text-[#07563c]" />
                   <span>Join Meeting</span>
                 </CardTitle>
                 <CardDescription>Join an existing meeting with ID</CardDescription>
@@ -106,16 +115,23 @@ const Index = () => {
                 </form>
               </CardContent>
               <CardFooter>
-                {name && meetingId ? <Link to={`/meeting/${meetingId}?name=${encodeURIComponent(name)}`} className="w-full">
-                    <Button className="w-full">Join Meeting</Button>
-                  </Link> : <Button className="w-full" disabled={!name || !meetingId}>Join Meeting</Button>}
+                {name && meetingId ? (
+                  <Link to={`/meeting/${meetingId}?name=${encodeURIComponent(name)}`} className="w-full">
+                    <Button className="w-full bg-[#07563c] hover:bg-[#07563c]/90">Join Meeting</Button>
+                  </Link>
+                ) : (
+                  <Button className="w-full bg-[#07563c] hover:bg-[#07563c]/90" disabled={!name || !meetingId}>Join Meeting</Button>
+                )}
               </CardFooter>
             </Card>
           </div>
 
           <div className="text-center mb-12">
             <Link to="/schedule">
-              <Button variant="outline" className="w-full md:w-auto transform transition-all hover:scale-105">
+              <Button 
+                variant="outline" 
+                className="w-full md:w-auto transform transition-all hover:scale-105 hover:bg-[#07563c] hover:text-white"
+              >
                 <Calendar className="w-4 h-4 mr-2" />
                 Schedule Meeting
               </Button>
@@ -145,6 +161,8 @@ const Index = () => {
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default Index;
