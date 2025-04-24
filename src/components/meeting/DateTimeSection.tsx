@@ -38,8 +38,9 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
           <Button
             variant="outline"
             className={cn(
-              "justify-start text-left font-normal md:w-[200px] w-full transition-colors hover:bg-[#07563c] hover:text-white hover:border-[#07563c]",
-              !date && "text-muted-foreground"
+              "justify-start text-left font-normal md:w-[200px] w-full",
+              !date && "text-muted-foreground",
+              "hover:bg-[#07563c] hover:text-white hover:border-[#07563c]"
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
@@ -52,7 +53,7 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
             selected={date}
             onSelect={setDate}
             initialFocus
-            className={cn("p-3 pointer-events-auto")}
+            className="p-3 pointer-events-auto"
           />
         </PopoverContent>
       </Popover>
@@ -67,7 +68,10 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
                 value={field.value}
                 onValueChange={field.onChange}
               >
-                <SelectTrigger className="w-[120px] transition-colors hover:bg-[#07563c] hover:text-white hover:border-[#07563c]">
+                <SelectTrigger 
+                  className="w-[120px] hover:bg-[#07563c] hover:text-white hover:border-[#07563c]"
+                  style={{ transition: "background-color 0.2s, color 0.2s, border-color 0.2s" }}
+                >
                   <SelectValue placeholder="09:00" />
                 </SelectTrigger>
                 <SelectContent>
@@ -97,7 +101,10 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
                 value={field.value}
                 onValueChange={field.onChange}
               >
-                <SelectTrigger className="w-[120px] transition-colors hover:bg-[#07563c] hover:text-white hover:border-[#07563c]">
+                <SelectTrigger 
+                  className="w-[120px] hover:bg-[#07563c] hover:text-white hover:border-[#07563c]"
+                  style={{ transition: "background-color 0.2s, color 0.2s, border-color 0.2s" }}
+                >
                   <SelectValue placeholder="09:30" />
                 </SelectTrigger>
                 <SelectContent>
@@ -125,7 +132,10 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
                 value={field.value}
                 onValueChange={field.onChange}
               >
-                <SelectTrigger className="w-full transition-colors hover:bg-[#07563c] hover:text-white hover:border-[#07563c]">
+                <SelectTrigger 
+                  className="w-full hover:bg-[#07563c] hover:text-white hover:border-[#07563c]"
+                  style={{ transition: "background-color 0.2s, color 0.2s, border-color 0.2s" }}
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -141,4 +151,3 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
     </div>
   );
 }
-

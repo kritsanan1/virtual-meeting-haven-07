@@ -110,6 +110,13 @@
   .select-item[data-disabled] {
     @apply pointer-events-none opacity-50;
   }
+  
+  /* Add specific hover styling for the select trigger elements */
+  [data-radix-select-trigger]:hover {
+    background-color: #07563c !important;
+    color: white !important;
+    border-color: #07563c !important;
+  }
 }
 
 @layer utilities {
