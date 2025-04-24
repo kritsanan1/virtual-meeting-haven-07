@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -186,7 +187,7 @@ export function MeetingForm({ onSubmitSuccess }: MeetingFormProps) {
           </Button>
           <Button 
             type="submit" 
-            className="bg-meeting-primary hover:bg-meeting-primary text-white"
+            className="bg-meeting-primary hover:bg-meeting-primary/90 text-white"
           >
             Save
           </Button>

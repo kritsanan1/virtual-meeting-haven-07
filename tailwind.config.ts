@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -64,7 +63,7 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				meeting: {
-					primary: '#9b87f5',
+					primary: '#07563c',
 					secondary: '#7E69AB',
 					accent: '#8B5CF6',
 					danger: '#ea384c',
