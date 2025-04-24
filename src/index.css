@@ -104,11 +104,11 @@
   }
 
   .select-item[data-highlighted] {
-    @apply bg-meeting-primary text-white cursor-pointer;
+    @apply bg-[#9b87f5] text-white cursor-pointer;
   }
 
   .select-item[data-state="checked"] {
-    @apply bg-meeting-primary text-white;
+    @apply bg-[#9b87f5] text-white;
   }
 
   .select-item[data-disabled] {
