@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from '@/hooks/use-toast';
+import { save, trash } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -58,7 +59,6 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
   }, [messages]);
 
   useEffect(() => {
-    // Clean up on unmount
     return () => {
       if (timerRef.current) {
         window.clearInterval(timerRef.current);
@@ -142,7 +142,6 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
       mediaRecorder.start();
       setIsRecording(true);
       
-      // Start timer
       timerRef.current = window.setInterval(() => {
         setRecordingTime(prevTime => prevTime + 1);
       }, 1000);
@@ -226,6 +225,36 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
     window.open('', 'Chat', `width=${width},height=${height},left=${left},top=${top}`);
   };
 
+  const clearChat = () => {
+    setMessages([]);
+    toast({
+      title: "Chat cleared",
+      description: "All messages have been removed",
+    });
+  };
+
+  const saveChat = () => {
+    const chatContent = messages.map(msg => {
+      const time = msg.timestamp.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      return `[${time}] ${msg.sender} to ${msg.recipient}: ${msg.content}`;
+    }).join('\n');
+
+    const blob = new Blob([chatContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `chat-${new Date().toISOString().slice(0, 10)}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    toast({
+      title: "Chat saved",
+      description: "Chat history has been downloaded",
+    });
+  };
+
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -259,8 +288,14 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuItem>Clear chat</DropdownMenuItem>
-                  <DropdownMenuItem>Save chat</DropdownMenuItem>
+                  <DropdownMenuItem onClick={clearChat}>
+                    <trash className="h-4 w-4 mr-2" />
+                    Clear chat
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={saveChat}>
+                    <save className="h-4 w-4 mr-2" />
+                    Save chat
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
               <DrawerClose asChild>
