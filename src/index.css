@@ -117,6 +117,13 @@
     color: white !important;
     border-color: #07563c !important;
   }
+  
+  /* Add hover styling for day picker buttons */
+  .rdp-button:hover:not([disabled]) {
+    background-color: #07563c !important;
+    color: white !important;
+    border-color: #07563c !important;
+  }
 }
 
 @layer utilities {
