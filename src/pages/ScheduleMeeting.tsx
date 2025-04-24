@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -17,38 +18,141 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { Calendar as CalendarIcon, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface MeetingFormData {
   title: string;
-  date: Date;
+  date: Date | undefined;
   startTime: string;
   endTime: string;
   timeZone: string;
   repeat: string;
-  attendees: string;
+  attendees: string[];
   meetingId: "automatic" | "personal";
+  description?: string;
+}
+
+interface Attendee {
+  email: string;
 }
 
 const ScheduleMeeting = () => {
   const [date, setDate] = useState<Date>();
+  const [showMoreOptions, setShowMoreOptions] = useState(false);
+  const [attendees, setAttendees] = useState<Attendee[]>([]);
+  const [attendeeInput, setAttendeeInput] = useState('');
+  const [showTrialDialog, setShowTrialDialog] = useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  
   const form = useForm<MeetingFormData>({
     defaultValues: {
-      meetingId: "automatic",
+      title: "",
+      date: undefined,
+      startTime: "09:00",
+      endTime: "09:30",
+      timeZone: "PST",
       repeat: "never",
+      attendees: [],
+      meetingId: "automatic",
+      description: "",
     },
   });
 
+  const handleAddAttendee = () => {
+    if (!attendeeInput.trim()) return;
+    
+    // Simple email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(attendeeInput) && attendeeInput.includes('@')) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setAttendees([...attendees, { email: attendeeInput }]);
+    setAttendeeInput('');
+
+    // Update the form value
+    const currentAttendees = form.getValues("attendees") || [];
+    form.setValue("attendees", [...currentAttendees, attendeeInput]);
+  };
+
+  const removeAttendee = (index: number) => {
+    const newAttendees = [...attendees];
+    newAttendees.splice(index, 1);
+    setAttendees(newAttendees);
+    
+    // Update the form value
+    const currentAttendees = form.getValues("attendees") || [];
+    const updatedAttendees = [...currentAttendees];
+    updatedAttendees.splice(index, 1);
+    form.setValue("attendees", updatedAttendees);
+  };
+
+  const activateFreeTrial = () => {
+    setShowTrialDialog(true);
+  };
+  
+  const handleFreeTrial = () => {
+    setShowTrialDialog(false);
+    toast({
+      title: "Free trial activated!",
+      description: "Your 14-day free trial of Zoom Scheduler has started",
+    });
+  };
+
   const onSubmit = (data: MeetingFormData) => {
-    console.log(data);
+    if (!date) {
+      toast({
+        title: "Date required",
+        description: "Please select a meeting date",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Prepare the complete form data with all fields
+    const completeData = {
+      ...data,
+      date,
+      attendees: attendees.map(a => a.email),
+    };
+    
+    console.log(completeData);
+    
+    toast({
+      title: "Meeting Scheduled",
+      description: `Your meeting "${completeData.title}" has been scheduled for ${format(date, "PPP")}`,
+    });
+    
+    // Redirect to home page after successful scheduling
+    setTimeout(() => navigate('/'), 1500);
+  };
+
+  const handleMoreOptions = () => {
+    setShowMoreOptions(!showMoreOptions);
   };
 
   return (
@@ -66,10 +170,15 @@ const ScheduleMeeting = () => {
           
           <div className="bg-blue-50 rounded-lg p-4">
             <div className="flex items-center gap-2">
-              <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded">FREE TRIAL</span>
+              <Button 
+                className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-2 py-1 rounded h-auto"
+                onClick={activateFreeTrial}
+              >
+                FREE TRIAL
+              </Button>
               <span className="text-sm">
                 Set up a Zoom Scheduler booking page for others to easily book with you—free for 14 days!{" "}
-                <a href="#" className="text-blue-600 underline">Try Now</a>
+                <button className="text-blue-600 underline" onClick={activateFreeTrial}>Try Now</button>
               </span>
             </div>
           </div>
@@ -89,17 +198,18 @@ const ScheduleMeeting = () => {
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
 
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col md:flex-row md:items-center gap-4">
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     className={cn(
-                      "justify-start text-left font-normal w-[200px]",
+                      "justify-start text-left font-normal md:w-[200px] w-full",
                       !date && "text-muted-foreground"
                     )}
                   >
@@ -118,106 +228,248 @@ const ScheduleMeeting = () => {
                 </PopoverContent>
               </Popover>
 
-              <Select defaultValue="09:00">
-                <SelectTrigger className="w-[130px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {Array.from({ length: 24 }).map((_, i) => (
-                    <SelectItem
-                      key={i}
-                      value={`${String(i).padStart(2, '0')}:00`}
-                    >
-                      {`${String(i).padStart(2, '0')}:00`}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="flex items-center gap-2 flex-wrap">
+                <FormField
+                  control={form.control}
+                  name="startTime"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="w-[120px]">
+                          <SelectValue placeholder="09:00" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Array.from({ length: 24 }).map((_, i) => (
+                            <SelectItem
+                              key={i}
+                              value={`${String(i).padStart(2, '0')}:00`}
+                            >
+                              {`${String(i).padStart(2, '0')}:00`}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
 
-              <span className="text-gray-500">to</span>
+                <span className="text-gray-500">to</span>
 
-              <Select defaultValue="09:30">
-                <SelectTrigger className="w-[130px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {Array.from({ length: 24 }).map((_, i) => (
-                    <SelectItem
-                      key={i}
-                      value={`${String(i).padStart(2, '0')}:30`}
-                    >
-                      {`${String(i).padStart(2, '0')}:30`}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                <FormField
+                  control={form.control}
+                  name="endTime"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="w-[120px]">
+                          <SelectValue placeholder="09:30" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Array.from({ length: 24 }).map((_, i) => (
+                            <SelectItem
+                              key={i}
+                              value={`${String(i).padStart(2, '0')}:30`}
+                            >
+                              {`${String(i).padStart(2, '0')}:30`}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
 
-              <Select defaultValue="PST">
-                <SelectTrigger className="w-[200px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="PST">Pakistan Standard Time</SelectItem>
-                  <SelectItem value="EST">Eastern Time</SelectItem>
-                  <SelectItem value="UTC">UTC</SelectItem>
-                </SelectContent>
-              </Select>
+                <FormField
+                  control={form.control}
+                  name="timeZone"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="PST">Pakistan Standard Time</SelectItem>
+                          <SelectItem value="EST">Eastern Time</SelectItem>
+                          <SelectItem value="UTC">UTC</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
 
             <div className="flex items-center gap-4">
               <span className="text-gray-700">Repeat</span>
-              <Select defaultValue="never">
-                <SelectTrigger className="w-[150px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="never">Never</SelectItem>
-                  <SelectItem value="daily">Daily</SelectItem>
-                  <SelectItem value="weekly">Weekly</SelectItem>
-                  <SelectItem value="monthly">Monthly</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormField
+                control={form.control}
+                name="repeat"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <SelectTrigger className="w-[150px]">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="never">Never</SelectItem>
+                        <SelectItem value="daily">Daily</SelectItem>
+                        <SelectItem value="weekly">Weekly</SelectItem>
+                        <SelectItem value="monthly">Monthly</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
             </div>
 
             <div className="space-y-4">
               <h3 className="font-medium">Attendees</h3>
-              <Input
-                placeholder="Name or email address"
-                className="w-full"
-              />
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Name or email address"
+                  className="flex-1"
+                  value={attendeeInput}
+                  onChange={(e) => setAttendeeInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAddAttendee();
+                    }
+                  }}
+                />
+                <Button type="button" onClick={handleAddAttendee}>Add</Button>
+              </div>
+              
+              {attendees.length > 0 && (
+                <div className="mt-2 space-y-2">
+                  {attendees.map((attendee, index) => (
+                    <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                      <span>{attendee.email}</span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeAttendee(index)}
+                      >
+                        ×
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="space-y-4">
               <h3 className="font-medium">Meeting ID</h3>
               <div className="space-y-4">
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="radio"
-                    id="automatic"
-                    value="automatic"
-                    className="rounded-full"
-                    defaultChecked
-                  />
-                  <label htmlFor="automatic">Generate Automatically</label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="radio"
-                    id="personal"
-                    value="personal"
-                    className="rounded-full"
-                  />
-                  <label htmlFor="personal">Personal Meeting ID 694 209 6101</label>
-                </div>
+                <FormField
+                  control={form.control}
+                  name="meetingId"
+                  render={({ field }) => (
+                    <FormItem className="space-y-4">
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="radio"
+                          id="automatic"
+                          checked={field.value === "automatic"}
+                          onChange={() => field.onChange("automatic")}
+                          className="rounded-full"
+                        />
+                        <label htmlFor="automatic">Generate Automatically</label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="radio"
+                          id="personal"
+                          checked={field.value === "personal"}
+                          onChange={() => field.onChange("personal")}
+                          className="rounded-full"
+                        />
+                        <label htmlFor="personal">Personal Meeting ID 694 209 6101</label>
+                      </div>
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
 
+            {showMoreOptions && (
+              <div className="space-y-4 border-t pt-4">
+                <h3 className="font-medium">Additional Options</h3>
+                
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Meeting Description</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Add a description for your meeting"
+                          className="min-h-[100px]"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
+
             <div className="flex justify-between pt-6">
-              <Button variant="outline">More Options</Button>
+              <Button 
+                type="button" 
+                variant="outline"
+                onClick={handleMoreOptions}
+              >
+                {showMoreOptions ? "Hide Options" : "More Options"}
+              </Button>
               <Button type="submit">Save</Button>
             </div>
           </form>
         </Form>
+
+        <Dialog open={showTrialDialog} onOpenChange={setShowTrialDialog}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Activate Your Free Trial</DialogTitle>
+              <DialogDescription>
+                Enjoy all premium features of Zoom Scheduler for 14 days at no cost.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <p>Your free trial includes:</p>
+              <ul className="list-disc pl-5 space-y-2">
+                <li>Custom booking pages</li>
+                <li>Advanced scheduling options</li>
+                <li>Calendar integration</li>
+                <li>Automated reminders</li>
+              </ul>
+              <p className="text-sm text-gray-500">No credit card required. Cancel anytime.</p>
+            </div>
+            <div className="flex justify-end gap-4">
+              <Button variant="outline" onClick={() => setShowTrialDialog(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleFreeTrial}>
+                Start Free Trial
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
