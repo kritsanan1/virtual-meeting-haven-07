@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Balloon, Rocket, ThumbsUp, PartyPopper, Heart, Hand } from 'lucide-react';
+import { Sparkles, Rocket, ThumbsUp, PartyPopper, Heart, Hand } from 'lucide-react';
 
 const Reactions = () => {
   const { toast } = useToast();
@@ -23,7 +23,7 @@ const Reactions = () => {
   };
 
   const effectReactions = [
-    { icon: Balloon, label: "🎈 Balloon" },
+    { icon: Sparkles, label: "✨ Sparkles" },
     { icon: Rocket, label: "🚀 Rocket" },
     { icon: ThumbsUp, label: "👍 Thumbs Up" },
     { icon: PartyPopper, label: "🎉 Party" },
@@ -94,4 +94,3 @@ const Reactions = () => {
 };
 
 export default Reactions;
-
