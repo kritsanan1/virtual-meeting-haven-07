@@ -2,6 +2,8 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Mic, MicOff, Video, VideoOff, ScreenShare, ScreenShareOff, Phone } from 'lucide-react';
+import HostTools from './HostTools';
+import Reactions from './Reactions';
 
 interface ControlPanelProps {
   isAudioEnabled: boolean;
@@ -11,6 +13,7 @@ interface ControlPanelProps {
   toggleVideo: () => void;
   toggleScreenSharing: () => void;
   leaveMeeting: () => void;
+  isHost?: boolean;
 }
 
 const ControlPanel: React.FC<ControlPanelProps> = ({
@@ -21,9 +24,10 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   toggleVideo,
   toggleScreenSharing,
   leaveMeeting,
+  isHost = false,
 }) => {
   return (
-    <div className="control-bar fixed bottom-0 left-0 right-0 p-3 flex justify-center">
+    <div className="control-bar fixed bottom-0 left-0 right-0 p-3 flex justify-center bg-white/80 backdrop-blur-sm">
       <div className="flex items-center gap-2 md:gap-4">
         <Button
           onClick={toggleAudio}
@@ -51,6 +55,10 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
         >
           {isScreenSharing ? <ScreenShareOff /> : <ScreenShare />}
         </Button>
+        
+        <Reactions />
+        
+        {isHost && <HostTools isHost={isHost} />}
         
         <Button
           onClick={leaveMeeting}

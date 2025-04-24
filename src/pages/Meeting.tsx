@@ -131,21 +131,16 @@ const Meeting = () => {
       </main>
 
       {/* Control panel */}
-      <div className="control-bar fixed bottom-0 left-0 right-0 p-3 flex justify-center bg-white/80 backdrop-blur-sm">
-        <div className="flex items-center gap-2 md:gap-4">
-          <ControlPanel 
-            isAudioEnabled={isAudioEnabled}
-            isVideoEnabled={isVideoEnabled}
-            isScreenSharing={isScreenSharing}
-            toggleAudio={toggleAudio}
-            toggleVideo={toggleVideo}
-            toggleScreenSharing={toggleScreenSharing}
-            leaveMeeting={leaveMeeting}
-          />
-          <Reactions />
-          <HostTools isHost={isHost} />
-        </div>
-      </div>
+      <ControlPanel 
+        isAudioEnabled={isAudioEnabled}
+        isVideoEnabled={isVideoEnabled}
+        isScreenSharing={isScreenSharing}
+        toggleAudio={toggleAudio}
+        toggleVideo={toggleVideo}
+        toggleScreenSharing={toggleScreenSharing}
+        leaveMeeting={leaveMeeting}
+        isHost={isHost}
+      />
     </div>
   );
 };
