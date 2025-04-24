@@ -1,22 +1,22 @@
-
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Copy, Info, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
 interface MeetingInfoProps {
   meetingId: string;
 }
-
-const MeetingInfo: React.FC<MeetingInfoProps> = ({ meetingId }) => {
+const MeetingInfo: React.FC<MeetingInfoProps> = ({
+  meetingId
+}) => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const currentDate = new Date();
   const meetingPassword = "Ceu98P";
   const participantId = "626032";
   const host = "Musaver";
-  
   const formattedTime = `${currentDate.toLocaleString('en-US', {
     weekday: 'long',
     month: 'long',
@@ -25,23 +25,15 @@ const MeetingInfo: React.FC<MeetingInfoProps> = ({ meetingId }) => {
     minute: 'numeric',
     hour12: true
   })}`;
-
   const handleCopy = (text: string, type: string) => {
     navigator.clipboard.writeText(text);
     toast({
       title: "Copied!",
-      description: `${type} has been copied to clipboard`,
+      description: `${type} has been copied to clipboard`
     });
   };
-
-  return (
-    <>
-      <Button
-        onClick={() => setIsOpen(true)}
-        variant="outline"
-        size="icon"
-        className="rounded-full h-12 w-12 bg-white hover:bg-gray-100"
-      >
+  return <>
+      <Button onClick={() => setIsOpen(true)} variant="outline" size="icon" className="rounded-full h-12 w-12 bg-white hover:bg-gray-100">
         <Info className="h-5 w-5 text-gray-700" />
       </Button>
 
@@ -49,13 +41,8 @@ const MeetingInfo: React.FC<MeetingInfoProps> = ({ meetingId }) => {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <div className="flex justify-between items-center">
-              <DialogTitle>Meeting info</DialogTitle>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => setIsOpen(false)}
-              >
+              <DialogTitle className="font-normal text-base text-justify">                                    Meeting info</DialogTitle>
+              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setIsOpen(false)}>
                 <X className="h-4 w-4" />
               </Button>
             </div>
@@ -70,12 +57,7 @@ const MeetingInfo: React.FC<MeetingInfoProps> = ({ meetingId }) => {
                 <span className="text-gray-500">Meeting ID</span>
                 <div className="flex items-center gap-2">
                   <span>{meetingId}</span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-6 w-6"
-                    onClick={() => handleCopy(meetingId, "Meeting ID")}
-                  >
+                  <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => handleCopy(meetingId, "Meeting ID")}>
                     <Copy className="h-4 w-4" />
                   </Button>
                 </div>
@@ -84,12 +66,7 @@ const MeetingInfo: React.FC<MeetingInfoProps> = ({ meetingId }) => {
                 <span className="text-gray-500">Passcode</span>
                 <div className="flex items-center gap-2">
                   <span>{meetingPassword}</span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-6 w-6"
-                    onClick={() => handleCopy(meetingPassword, "Password")}
-                  >
+                  <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => handleCopy(meetingPassword, "Password")}>
                     <Copy className="h-4 w-4" />
                   </Button>
                 </div>
@@ -104,11 +81,7 @@ const MeetingInfo: React.FC<MeetingInfoProps> = ({ meetingId }) => {
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-gray-500">Invite link</span>
-                <Button
-                  variant="link"
-                  className="text-blue-500 p-0 h-auto"
-                  onClick={() => handleCopy(`https://us04web.zoom.us/j/${meetingId}`, "Invite link")}
-                >
+                <Button variant="link" className="text-blue-500 p-0 h-auto" onClick={() => handleCopy(`https://us04web.zoom.us/j/${meetingId}`, "Invite link")}>
                   Copy link
                 </Button>
               </div>
@@ -116,8 +89,6 @@ const MeetingInfo: React.FC<MeetingInfoProps> = ({ meetingId }) => {
           </div>
         </DialogContent>
       </Dialog>
-    </>
-  );
+    </>;
 };
-
 export default MeetingInfo;
