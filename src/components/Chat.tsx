@@ -168,7 +168,7 @@ export const Chat: React.FC<ChatProps> = ({
 
           <div className="p-4 border-t bg-white">
             <div className="bg-gray-50 rounded-lg p-2 py-[15px] px-0">
-              <div className="mb-2 px-0">
+              <div className="mb-2 px-[7px]">
                 <Select value={recipient} onValueChange={setRecipient}>
                   <SelectTrigger className="w-[140px] h-8 text-sm px-[9px]">
                     <SelectValue placeholder="To: Everyone" />
