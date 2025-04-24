@@ -185,7 +185,12 @@ export function MeetingForm({ onSubmitSuccess }: MeetingFormProps) {
           >
             {showMoreOptions ? "Hide Options" : "More Options"}
           </Button>
-          <Button type="submit">Save</Button>
+          <Button 
+            type="submit" 
+            className="bg-meeting-primary hover:bg-meeting-primary hover:text-white"
+          >
+            Save
+          </Button>
         </div>
       </form>
     </Form>
