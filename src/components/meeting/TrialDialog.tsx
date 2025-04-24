@@ -38,7 +38,10 @@ export function TrialDialog({ open, onOpenChange, onActivate }: TrialDialogProps
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button onClick={onActivate}>
+          <Button 
+            onClick={onActivate}
+            className="bg-meeting-primary hover:bg-meeting-primary/90 text-white"
+          >
             Start Free Trial
           </Button>
         </div>

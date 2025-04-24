@@ -10,13 +10,13 @@ export function ConnectionBanners({
 }: ConnectionBannersProps) {
   return (
     <div className="space-y-4">
-      <div className="bg-blue-50 rounded-xl p-6 border border-blue-100">
-        <div className="flex items-center gap-3 text-blue-700">
+      <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+        <div className="flex items-center gap-3 text-meeting-primary">
           <span className="text-sm font-medium">
             Connect your calendar to manage all your events in one place and experience all advanced features!{" "}
             <a 
               href="#" 
-              className={`underline hover:text-white transition-colors ${className}`}
+              className={`underline hover:bg-meeting-primary hover:text-white transition-colors ${className}`}
             >
               Connect
             </a>
@@ -24,18 +24,18 @@ export function ConnectionBanners({
         </div>
       </div>
       
-      <div className="bg-blue-50 rounded-xl p-6 border border-blue-100">
+      <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
         <div className="flex items-center gap-3">
           <button 
-            className={`bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${className}`}
+            className={`bg-meeting-primary hover:bg-meeting-primary/90 text-white text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${className}`}
             onClick={onActivateFreeTrial}
           >
             FREE TRIAL
           </button>
-          <span className="text-sm font-medium text-blue-700">
+          <span className="text-sm font-medium text-meeting-primary">
             Set up a Zoom Scheduler booking page for others to easily book with you—free for 14 days!{" "}
             <button 
-              className={`text-blue-600 underline hover:text-white transition-colors ${className}`} 
+              className={`text-meeting-primary underline hover:bg-meeting-primary hover:text-white transition-colors ${className}`} 
               onClick={onActivateFreeTrial}
             >
               Try Now
