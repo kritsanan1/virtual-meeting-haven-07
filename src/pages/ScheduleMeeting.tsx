@@ -299,19 +299,19 @@ const ScheduleMeeting = () => {
                         <SelectContent className="bg-white">
                           <SelectItem 
                             value="PST"
-                            className="data-[state=checked]:bg-blue-600 data-[state=checked]:text-white hover:bg-blue-50"
+                            className="select-item"
                           >
                             Pakistan Standard Time
                           </SelectItem>
                           <SelectItem 
                             value="EST"
-                            className="data-[state=checked]:bg-blue-600 data-[state=checked]:text-white hover:bg-blue-50"
+                            className="select-item"
                           >
                             Eastern Time
                           </SelectItem>
                           <SelectItem 
                             value="UTC"
-                            className="data-[state=checked]:bg-blue-600 data-[state=checked]:text-white hover:bg-blue-50"
+                            className="select-item"
                           >
                             UTC
                           </SelectItem>
