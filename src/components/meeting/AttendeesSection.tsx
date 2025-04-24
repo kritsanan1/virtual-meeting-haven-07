@@ -58,7 +58,7 @@ export function AttendeesSection({
         <Button 
           type="button" 
           onClick={handleAddAttendee}
-          className="bg-meeting-primary text-white hover:bg-meeting-primary/90"
+          className="bg-[#07563c] text-white hover:bg-[#07563c]/90"
         >
           Add
         </Button>
@@ -74,6 +74,7 @@ export function AttendeesSection({
                 variant="ghost"
                 size="sm"
                 onClick={() => onRemoveAttendee(index)}
+                className="hover:bg-[#07563c] hover:text-white"
               >
                 ×
               </Button>
@@ -84,4 +85,3 @@ export function AttendeesSection({
     </div>
   );
 }
-

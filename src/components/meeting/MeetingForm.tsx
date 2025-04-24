@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -182,13 +181,13 @@ export function MeetingForm({ onSubmitSuccess }: MeetingFormProps) {
             type="button" 
             variant="outline"
             onClick={() => setShowMoreOptions(!showMoreOptions)}
-            className="hover:bg-meeting-primary hover:text-white"
+            className="hover:bg-[#07563c] hover:text-white"
           >
             {showMoreOptions ? "Hide Options" : "More Options"}
           </Button>
           <Button 
             type="submit" 
-            className="bg-meeting-primary hover:bg-meeting-primary/90 text-white"
+            className="bg-[#07563c] hover:bg-[#07563c]/90 text-white"
           >
             Save
           </Button>
@@ -197,4 +196,3 @@ export function MeetingForm({ onSubmitSuccess }: MeetingFormProps) {
     </Form>
   );
 }
-
