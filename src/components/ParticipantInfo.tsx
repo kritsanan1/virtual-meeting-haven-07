@@ -21,7 +21,7 @@ const ParticipantInfo: React.FC<ParticipantInfoProps> = ({ participants }) => {
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="flex items-center gap-1">
-          <Users className="h-4 w-4" />
+          <Users className="h-4 w-4 text-[#07563c]" />
           <span>{participants.length}</span>
         </Button>
       </PopoverTrigger>

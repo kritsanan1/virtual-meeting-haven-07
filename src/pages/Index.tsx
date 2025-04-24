@@ -130,7 +130,7 @@ const Index = () => {
             <Link to="/schedule">
               <Button 
                 variant="outline" 
-                className="w-full md:w-auto transform transition-all hover:scale-105 hover:bg-[#07563c] hover:text-white"
+                className="w-full md:w-auto transform transition-all hover:bg-[#07563c] hover:text-white"
               >
                 <Calendar className="w-4 h-4 mr-2" />
                 Schedule Meeting

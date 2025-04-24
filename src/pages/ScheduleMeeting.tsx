@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ConnectionBanners } from "@/components/meeting/ConnectionBanners";
 import { TrialDialog } from "@/components/meeting/TrialDialog";
@@ -31,7 +30,11 @@ const ScheduleMeeting = () => {
           />
           
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <MeetingForm />
+            <MeetingForm 
+              onSubmitSuccess={() => {
+                // Existing onSubmit logic
+              }} 
+            />
           </div>
         </div>
 
