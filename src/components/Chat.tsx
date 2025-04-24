@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { MessageCircle, Send, PenLine, Square, ExternalLink, X, MoreVertical, Reply, Mic, MicOff } from 'lucide-react';
+import { MessageCircle, Send, PenLine, Square, ExternalLink, X, MoreVertical, Reply, Mic, MicOff, Save, Trash } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, DrawerClose } from '@/components/ui/drawer';
 import {
@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from '@/hooks/use-toast';
-import { save, trash } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -289,11 +288,11 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuItem onClick={clearChat}>
-                    <trash className="h-4 w-4 mr-2" />
+                    <Trash className="h-4 w-4 mr-2" />
                     Clear chat
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={saveChat}>
-                    <save className="h-4 w-4 mr-2" />
+                    <Save className="h-4 w-4 mr-2" />
                     Save chat
                   </DropdownMenuItem>
                 </DropdownMenuContent>
