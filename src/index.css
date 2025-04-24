@@ -104,7 +104,7 @@
   }
 
   .select-item[data-highlighted] {
-    @apply bg-[#9b87f5] text-white cursor-pointer;
+    @apply outline outline-2 outline-gray-200 cursor-pointer;
   }
 
   .select-item[data-state="checked"] {
