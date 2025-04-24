@@ -5,11 +5,10 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, Rocket, ThumbsUp, PartyPopper, Heart, Hand } from 'lucide-react';
+import { Heart } from 'lucide-react';
 
 const Reactions = () => {
   const { toast } = useToast();
@@ -23,17 +22,21 @@ const Reactions = () => {
   };
 
   const effectReactions = [
-    { icon: Sparkles, label: "✨ Sparkles" },
-    { icon: Rocket, label: "🚀 Rocket" },
-    { icon: ThumbsUp, label: "👍 Thumbs Up" },
-    { icon: PartyPopper, label: "🎉 Party" },
-    { icon: Heart, label: "❤️ Heart" },
+    { emoji: "🎈", label: "Balloon" },
+    { emoji: "🚀", label: "Rocket" },
+    { emoji: "👍", label: "Thumbs Up" },
+    { emoji: "😂", label: "Joy" },
+    { emoji: "🎉", label: "Party" },
+    { emoji: "❤️", label: "Heart" },
   ];
 
   const quickReactions = [
-    { icon: ThumbsUp, label: "👍 Like" },
-    { icon: Heart, label: "❤️ Heart" },
-    { icon: PartyPopper, label: "🎉 Celebrate" },
+    { emoji: "👏", label: "Clap" },
+    { emoji: "👍", label: "Like" },
+    { emoji: "❤️", label: "Heart" },
+    { emoji: "😂", label: "Joy" },
+    { emoji: "😮", label: "Wow" },
+    { emoji: "🎉", label: "Party" },
   ];
 
   return (
@@ -42,52 +45,54 @@ const Reactions = () => {
         <Button 
           variant="outline" 
           size="icon" 
-          className="rounded-full h-12 w-12 bg-white hover:bg-gray-100"
+          className="rounded-full h-12 w-12 bg-white hover:bg-gray-100 flex items-center justify-center"
         >
-          <span role="img" aria-label="reactions">😊</span>
+          <Heart className="h-5 w-5 text-gray-700" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 p-2">
-        <DropdownMenuLabel>Send with effect</DropdownMenuLabel>
-        <div className="grid grid-cols-5 gap-1 p-1">
-          {effectReactions.map((reaction) => (
-            <Button
-              key={reaction.label}
-              variant="ghost"
-              className="flex flex-col items-center p-2 h-auto hover:bg-accent"
-              onClick={() => sendReaction(reaction.label)}
-            >
-              <reaction.icon className="h-5 w-5" />
-            </Button>
-          ))}
+      <DropdownMenuContent className="w-[280px] bg-[#1c1c1c] border-gray-700">
+        <div className="p-2 space-y-4">
+          <div>
+            <DropdownMenuLabel className="text-gray-300 px-2">Send with effect</DropdownMenuLabel>
+            <div className="grid grid-cols-6 gap-2 mt-2">
+              {effectReactions.map((reaction) => (
+                <Button
+                  key={reaction.label}
+                  variant="ghost"
+                  className="flex items-center justify-center p-2 h-10 w-10 rounded-lg hover:bg-gray-800"
+                  onClick={() => sendReaction(reaction.emoji)}
+                >
+                  <span className="text-xl">{reaction.emoji}</span>
+                </Button>
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <DropdownMenuLabel className="text-gray-300 px-2">Reactions</DropdownMenuLabel>
+            <div className="grid grid-cols-6 gap-2 mt-2">
+              {quickReactions.map((reaction) => (
+                <Button
+                  key={reaction.label}
+                  variant="ghost"
+                  className="flex items-center justify-center p-2 h-10 w-10 rounded-lg hover:bg-gray-800"
+                  onClick={() => sendReaction(reaction.emoji)}
+                >
+                  <span className="text-xl">{reaction.emoji}</span>
+                </Button>
+              ))}
+            </div>
+          </div>
+          
+          <Button
+            variant="secondary"
+            className="w-full gap-2 bg-gray-800 hover:bg-gray-700 text-gray-300"
+            onClick={() => sendReaction("✋")}
+          >
+            <span className="text-xl">✋</span>
+            <span>Raise hand</span>
+          </Button>
         </div>
-        
-        <DropdownMenuSeparator />
-        
-        <DropdownMenuLabel>Reactions</DropdownMenuLabel>
-        <div className="grid grid-cols-5 gap-1 p-1">
-          {quickReactions.map((reaction) => (
-            <Button
-              key={reaction.label}
-              variant="ghost"
-              className="flex flex-col items-center p-2 h-auto hover:bg-accent"
-              onClick={() => sendReaction(reaction.label)}
-            >
-              <reaction.icon className="h-5 w-5" />
-            </Button>
-          ))}
-        </div>
-        
-        <DropdownMenuSeparator />
-        
-        <Button
-          variant="secondary"
-          className="w-full mt-1 gap-2"
-          onClick={() => sendReaction("✋ Raised Hand")}
-        >
-          <Hand className="h-4 w-4" />
-          <span>Raise hand</span>
-        </Button>
       </DropdownMenuContent>
     </DropdownMenu>
   );
