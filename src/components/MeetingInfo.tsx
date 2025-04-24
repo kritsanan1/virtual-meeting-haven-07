@@ -40,7 +40,7 @@ const MeetingInfo: React.FC<MeetingInfoProps> = ({
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader className="border-b pb-2">
-            <div className="flex justify-between items-center bg-slate-200">
+            <div className="flex justify-between items-center bg-slate-200/[0.06]">
               <DialogTitle className="text-base font-normal">Meeting info</DialogTitle>
               <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setIsOpen(false)}>
                 <X className="h-4 w-4" />
