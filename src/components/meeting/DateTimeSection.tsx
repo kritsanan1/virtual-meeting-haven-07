@@ -38,7 +38,7 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
           <Button
             variant="outline"
             className={cn(
-              "justify-start text-left font-normal md:w-[200px] w-full",
+              "justify-start text-left font-normal md:w-[200px] w-full hover:bg-[#07563c] hover:text-white",
               !date && "text-muted-foreground"
             )}
           >
@@ -67,7 +67,7 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
                 value={field.value}
                 onValueChange={field.onChange}
               >
-                <SelectTrigger className="w-[120px]">
+                <SelectTrigger className="w-[120px] hover:bg-[#07563c] hover:text-white">
                   <SelectValue placeholder="09:00" />
                 </SelectTrigger>
                 <SelectContent>
@@ -96,7 +96,7 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
                 value={field.value}
                 onValueChange={field.onChange}
               >
-                <SelectTrigger className="w-[120px]">
+                <SelectTrigger className="w-[120px] hover:bg-[#07563c] hover:text-white">
                   <SelectValue placeholder="09:30" />
                 </SelectTrigger>
                 <SelectContent>
@@ -123,7 +123,7 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
                 value={field.value}
                 onValueChange={field.onChange}
               >
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-full hover:bg-[#07563c] hover:text-white">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
