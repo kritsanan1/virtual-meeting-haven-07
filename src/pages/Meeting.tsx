@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -8,6 +7,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useMediaStream } from '@/hooks/use-media-stream';
 import ParticipantInfo from '@/components/ParticipantInfo';
 import { Chat } from '@/components/Chat';
+import HostTools from '@/components/HostTools';
+import Reactions from '@/components/Reactions';
 
 const Meeting = () => {
   const { id } = useParams<{ id: string }>();
@@ -27,6 +28,8 @@ const Meeting = () => {
     toggleScreenSharing,
     error
   } = useMediaStream();
+
+  const [isHost] = useState(true); // For demo purposes, we'll assume the user is a host
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -128,15 +131,21 @@ const Meeting = () => {
       </main>
 
       {/* Control panel */}
-      <ControlPanel 
-        isAudioEnabled={isAudioEnabled}
-        isVideoEnabled={isVideoEnabled}
-        isScreenSharing={isScreenSharing}
-        toggleAudio={toggleAudio}
-        toggleVideo={toggleVideo}
-        toggleScreenSharing={toggleScreenSharing}
-        leaveMeeting={leaveMeeting}
-      />
+      <div className="control-bar fixed bottom-0 left-0 right-0 p-3 flex justify-center bg-white/80 backdrop-blur-sm">
+        <div className="flex items-center gap-2 md:gap-4">
+          <ControlPanel 
+            isAudioEnabled={isAudioEnabled}
+            isVideoEnabled={isVideoEnabled}
+            isScreenSharing={isScreenSharing}
+            toggleAudio={toggleAudio}
+            toggleVideo={toggleVideo}
+            toggleScreenSharing={toggleScreenSharing}
+            leaveMeeting={leaveMeeting}
+          />
+          <Reactions />
+          <HostTools isHost={isHost} />
+        </div>
+      </div>
     </div>
   );
 };
