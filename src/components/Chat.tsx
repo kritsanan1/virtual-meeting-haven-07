@@ -1,9 +1,8 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { MessageCircle, Send, PenLine, Square, ExternalLink, X, MoreVertical, Reply } from 'lucide-react';
+import { MessageCircle, Send, PenLine, Square, ExternalLink, X, MoreVertical, Reply, Mic, MicOff } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, DrawerClose } from '@/components/ui/drawer';
 import {
@@ -12,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Message {
   id: string;
@@ -30,14 +30,64 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [replyingTo, setReplyingTo] = useState<Message | null>(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
 
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        
+        const message: Message = {
+          id: Date.now().toString(),
+          sender: userName,
+          content: `[Audio Message](${audioUrl})`,
+          timestamp: new Date(),
+          replyTo: replyingTo?.id,
+          replies: [],
+        };
+
+        setMessages(prev => [...prev, message]);
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+    } catch (error) {
+      console.error('Error accessing microphone:', error);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const handleEditMessage = () => {
+    setIsEditing(!isEditing);
+  };
 
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -201,25 +251,47 @@ export const Chat: React.FC<ChatProps> = ({ userName }) => {
                 <span className="text-sm text-gray-600">To: Everyone</span>
               </div>
               <form onSubmit={sendMessage} className="flex flex-col gap-2">
-                <Input
-                  placeholder="Type message here..."
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  className="bg-transparent border-0 shadow-none focus-visible:ring-0 px-2 text-gray-700"
-                />
+                {isEditing ? (
+                  <Textarea
+                    placeholder="Type message here..."
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    className="bg-transparent border-0 shadow-none focus-visible:ring-0 px-2 text-gray-700 min-h-[80px]"
+                  />
+                ) : (
+                  <Input
+                    placeholder="Type message here..."
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    className="bg-transparent border-0 shadow-none focus-visible:ring-0 px-2 text-gray-700"
+                  />
+                )}
                 <div className="flex items-center justify-between px-2">
                   <div className="flex gap-2">
-                    <Button type="button" variant="ghost" size="icon" className="text-gray-500">
+                    <Button 
+                      type="button" 
+                      variant="ghost" 
+                      size="icon" 
+                      className="text-gray-500"
+                      onClick={handleEditMessage}
+                    >
                       <PenLine className="h-4 w-4" />
                     </Button>
-                    <Button type="button" variant="ghost" size="icon" className="text-gray-500">
-                      <Square className="h-4 w-4" />
+                    <Button 
+                      type="button" 
+                      variant="ghost" 
+                      size="icon" 
+                      className={`text-gray-500 ${isRecording ? 'bg-red-100' : ''}`}
+                      onClick={isRecording ? stopRecording : startRecording}
+                    >
+                      {isRecording ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
                     </Button>
                   </div>
                   <Button 
                     type="submit"
                     size="icon"
                     className="bg-meeting-primary hover:bg-meeting-primary/90"
+                    disabled={isRecording}
                   >
                     <Send className="h-4 w-4" />
                   </Button>
