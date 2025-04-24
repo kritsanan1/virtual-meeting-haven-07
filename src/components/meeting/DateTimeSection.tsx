@@ -40,7 +40,7 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
             className={cn(
               "justify-start text-left font-normal md:w-[200px] w-full",
               !date && "text-muted-foreground",
-              "hover:bg-[#07563c] hover:text-white hover:border-[#07563c]"
+              "hover:bg-[#07563c] hover:text-white hover:border-[#07563c] transition-colors duration-200"
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
@@ -69,8 +69,7 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
                 onValueChange={field.onChange}
               >
                 <SelectTrigger 
-                  className="w-[120px] hover:bg-[#07563c] hover:text-white hover:border-[#07563c]"
-                  style={{ transition: "background-color 0.2s, color 0.2s, border-color 0.2s" }}
+                  className="w-[120px] hover:bg-[#07563c] hover:text-white hover:border-[#07563c] transition-colors duration-200"
                 >
                   <SelectValue placeholder="09:00" />
                 </SelectTrigger>
@@ -102,8 +101,7 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
                 onValueChange={field.onChange}
               >
                 <SelectTrigger 
-                  className="w-[120px] hover:bg-[#07563c] hover:text-white hover:border-[#07563c]"
-                  style={{ transition: "background-color 0.2s, color 0.2s, border-color 0.2s" }}
+                  className="w-[120px] hover:bg-[#07563c] hover:text-white hover:border-[#07563c] transition-colors duration-200"
                 >
                   <SelectValue placeholder="09:30" />
                 </SelectTrigger>
@@ -133,8 +131,7 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
                 onValueChange={field.onChange}
               >
                 <SelectTrigger 
-                  className="w-full hover:bg-[#07563c] hover:text-white hover:border-[#07563c]"
-                  style={{ transition: "background-color 0.2s, color 0.2s, border-color 0.2s" }}
+                  className="w-full hover:bg-[#07563c] hover:text-white hover:border-[#07563c] transition-colors duration-200"
                 >
                   <SelectValue />
                 </SelectTrigger>
