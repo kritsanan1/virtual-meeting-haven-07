@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -55,7 +54,7 @@ const ChatMessage = ({
           <Button
             variant="ghost"
             size="sm"
-            className="mt-1 text-blue-600 hover:text-blue-700 p-0 h-auto font-normal"
+            className="mt-1 text-blue-600 hover:text-blue-700 p-0 h-auto font-normal hover:bg-transparent cursor-pointer"
             onClick={() => onReply(message)}
           >
             <Reply className="h-4 w-4 mr-1" />
