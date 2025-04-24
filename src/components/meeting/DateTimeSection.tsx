@@ -54,6 +54,9 @@ export function DateTimeSection({ date, setDate, form }: DateTimeSectionProps) {
             onSelect={setDate}
             initialFocus
             className="p-3 pointer-events-auto"
+            classNames={{
+              day_outside: "day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30 [&[data-day='24']]:bg-transparent [&[data-day='24']]:border-none",
+            }}
           />
         </PopoverContent>
       </Popover>
