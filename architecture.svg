@@ -1,0 +1,166 @@
+
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font: bold 16px sans-serif; text-anchor: middle; }
+      .label { font: 12px sans-serif; text-anchor: middle; }
+      .small { font: 10px sans-serif; text-anchor: middle; }
+      .component { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; }
+      .page { fill: #f3e5f5; stroke: #7b1fa2; stroke-width: 2; }
+      .hook { fill: #e8f5e8; stroke: #388e3c; stroke-width: 2; }
+      .ui { fill: #fff3e0; stroke: #f57c00; stroke-width: 2; }
+      .external { fill: #ffebee; stroke: #d32f2f; stroke-width: 2; }
+      .data-flow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="600" y="30" class="title">Meeting Application Architecture</text>
+
+  <!-- Pages Layer -->
+  <rect x="50" y="60" width="150" height="80" class="page" rx="5"/>
+  <text x="125" y="85" class="label">Index Page</text>
+  <text x="125" y="105" class="small">Home/Landing</text>
+  <text x="125" y="120" class="small">Join Meeting</text>
+
+  <rect x="220" y="60" width="150" height="80" class="page" rx="5"/>
+  <text x="295" y="85" class="label">Meeting Page</text>
+  <text x="295" y="105" class="small">Video Conference</text>
+  <text x="295" y="120" class="small">Main Interface</text>
+
+  <rect x="390" y="60" width="150" height="80" class="page" rx="5"/>
+  <text x="465" y="85" class="label">Schedule Page</text>
+  <text x="465" y="105" class="small">Meeting Planning</text>
+  <text x="465" y="120" class="small">Form Interface</text>
+
+  <!-- Core Components Layer -->
+  <rect x="50" y="180" width="120" height="60" class="component" rx="5"/>
+  <text x="110" y="205" class="label">VideoPlayer</text>
+  <text x="110" y="220" class="small">Stream Display</text>
+
+  <rect x="190" y="180" width="120" height="60" class="component" rx="5"/>
+  <text x="250" y="205" class="label">ControlPanel</text>
+  <text x="250" y="220" class="small">Meeting Controls</text>
+
+  <rect x="330" y="180" width="120" height="60" class="component" rx="5"/>
+  <text x="390" y="205" class="label">Chat</text>
+  <text x="390" y="220" class="small">Messaging</text>
+
+  <rect x="470" y="180" width="120" height="60" class="component" rx="5"/>
+  <text x="530" y="205" class="label">MeetingForm</text>
+  <text x="530" y="220" class="small">Scheduling</text>
+
+  <!-- Hooks Layer -->
+  <rect x="50" y="280" width="150" height="60" class="hook" rx="5"/>
+  <text x="125" y="305" class="label">useMediaStream</text>
+  <text x="125" y="320" class="small">WebRTC Management</text>
+
+  <rect x="220" y="280" width="150" height="60" class="hook" rx="5"/>
+  <text x="295" y="305" class="label">useChat</text>
+  <text x="295" y="320" class="small">Chat State</text>
+
+  <rect x="390" y="280" width="150" height="60" class="hook" rx="5"/>
+  <text x="465" y="305" class="label">useToast</text>
+  <text x="465" y="320" class="small">Notifications</text>
+
+  <!-- UI Components Layer -->
+  <rect x="620" y="180" width="120" height="160" class="ui" rx="5"/>
+  <text x="680" y="205" class="label">UI Components</text>
+  <text x="680" y="225" class="small">• Calendar</text>
+  <text x="680" y="240" class="small">• Forms</text>
+  <text x="680" y="255" class="small">• Buttons</text>
+  <text x="680" y="270" class="small">• Dialogs</text>
+  <text x="680" y="285" class="small">• Drawers</text>
+  <text x="680" y="300" class="small">• Inputs</text>
+  <text x="680" y="315" class="small">• Avatars</text>
+  <text x="680" y="330" class="small">Shadcn/ui</text>
+
+  <!-- External Services -->
+  <rect x="800" y="60" width="150" height="80" class="external" rx="5"/>
+  <text x="875" y="85" class="label">WebRTC APIs</text>
+  <text x="875" y="105" class="small">getUserMedia</text>
+  <text x="875" y="120" class="small">getDisplayMedia</text>
+
+  <rect x="800" y="180" width="150" height="60" class="external" rx="5"/>
+  <text x="875" y="205" class="label">Browser APIs</text>
+  <text x="875" y="220" class="small">MediaDevices</text>
+
+  <rect x="800" y="280" width="150" height="60" class="external" rx="5"/>
+  <text x="875" y="305" class="label">Date/Time APIs</text>
+  <text x="875" y="320" class="small">date-fns</text>
+
+  <!-- Data Flow Arrows -->
+  <!-- Pages to Components -->
+  <path d="M 295 140 L 250 180" class="data-flow"/>
+  <path d="M 295 140 L 110 180" class="data-flow"/>
+  <path d="M 295 140 L 390 180" class="data-flow"/>
+  <path d="M 465 140 L 530 180" class="data-flow"/>
+
+  <!-- Components to Hooks -->
+  <path d="M 110 240 L 125 280" class="data-flow"/>
+  <path d="M 250 240 L 125 280" class="data-flow"/>
+  <path d="M 390 240 L 295 280" class="data-flow"/>
+  <path d="M 530 240 L 465 280" class="data-flow"/>
+
+  <!-- Components to UI -->
+  <path d="M 450 210 L 620 210" class="data-flow"/>
+  <path d="M 530 200 L 620 250" class="data-flow"/>
+
+  <!-- Hooks to External -->
+  <path d="M 200 310 L 800 220" class="data-flow"/>
+  <path d="M 540 305 L 800 305" class="data-flow"/>
+
+  <!-- Components to External -->
+  <path d="M 170 200 L 800 100" class="data-flow"/>
+
+  <!-- State Management Flow -->
+  <rect x="50" y="380" width="500" height="100" fill="#f5f5f5" stroke="#999" stroke-width="1" rx="5"/>
+  <text x="300" y="405" class="label">State Management Flow</text>
+  <text x="70" y="425" class="small">1. User interactions trigger component events</text>
+  <text x="70" y="440" class="small">2. Components call custom hooks for state management</text>
+  <text x="70" y="455" class="small">3. Hooks interact with browser APIs and external services</text>
+  <text x="70" y="470" class="small">4. State updates propagate back to UI components</text>
+
+  <!-- Authentication Note -->
+  <rect x="620" y="380" width="200" height="80" fill="#fff9c4" stroke="#f9a825" stroke-width="2" rx="5"/>
+  <text x="720" y="405" class="label">Authentication</text>
+  <text x="720" y="425" class="small">Currently client-side only</text>
+  <text x="720" y="440" class="small">No backend integration</text>
+  <text x="720" y="455" class="small">Ready for future auth</text>
+
+  <!-- Technology Stack -->
+  <rect x="50" y="520" width="900" height="120" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2" rx="5"/>
+  <text x="500" y="545" class="label">Technology Stack</text>
+  
+  <text x="100" y="570" class="small">Frontend Framework:</text>
+  <text x="100" y="585" class="small">• React 18.3.1 + TypeScript</text>
+  <text x="100" y="600" class="small">• Vite (Build Tool)</text>
+  <text x="100" y="615" class="small">• React Router (Routing)</text>
+
+  <text x="350" y="570" class="small">Styling & UI:</text>
+  <text x="350" y="585" class="small">• Tailwind CSS</text>
+  <text x="350" y="600" class="small">• Shadcn/ui Components</text>
+  <text x="350" y="615" class="small">• Radix UI Primitives</text>
+
+  <text x="600" y="570" class="small">Media & Communication:</text>
+  <text x="600" y="585" class="small">• WebRTC APIs</text>
+  <text x="600" y="600" class="small">• MediaStream API</text>
+  <text x="600" y="615" class="small">• Screen Capture API</text>
+
+  <text x="800" y="570" class="small">State & Data:</text>
+  <text x="800" y="585" class="small">• React Hooks</text>
+  <text x="800" y="600" class="small">• TanStack Query</text>
+  <text x="800" y="615" class="small">• React Hook Form</text>
+
+  <!-- Deployment Info -->
+  <rect x="50" y="680" width="400" height="60" fill="#e0f2f1" stroke="#00695c" stroke-width="2" rx="5"/>
+  <text x="250" y="705" class="label">Deployment</text>
+  <text x="250" y="720" class="small">Static site deployment via Lovable platform</text>
+
+  <rect x="500" y="680" width="400" height="60" fill="#fce4ec" stroke="#c2185b" stroke-width="2" rx="5"/>
+  <text x="700" y="705" class="label">Future Enhancements</text>
+  <text x="700" y="720" class="small">Real-time signaling server, user authentication, persistent chat</text>
+</svg>

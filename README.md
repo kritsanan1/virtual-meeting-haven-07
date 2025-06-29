@@ -1,73 +1,269 @@
-# Welcome to your Lovable project
 
-## Project info
+# Meeting Application
 
-**URL**: https://lovable.dev/projects/7e46ae54-5b92-41b5-8276-81f5fec4380a
+A modern, web-based video conferencing application built with React, TypeScript, and WebRTC. This application provides a complete meeting experience with video/audio calls, screen sharing, real-time chat, and meeting scheduling capabilities.
 
-## How can I edit this code?
+## 🚀 Features
 
-There are several ways of editing your application.
+- **Video Conferencing**: High-quality video and audio calls using WebRTC
+- **Screen Sharing**: Share your screen with meeting participants
+- **Real-time Chat**: Text messaging with inline replies and voice notes
+- **Meeting Scheduling**: Schedule meetings with calendar integration
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Modern UI**: Clean, intuitive interface built with Tailwind CSS and Shadcn/ui
 
-**Use Lovable**
+## 🛠️ Technology Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/7e46ae54-5b92-41b5-8276-81f5fec4380a) and start prompting.
+- **Frontend**: React 18.3.1 + TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **UI Components**: Shadcn/ui + Radix UI
+- **Routing**: React Router DOM
+- **Forms**: React Hook Form
+- **State Management**: TanStack React Query
+- **Media**: WebRTC APIs
+- **Icons**: Lucide React
 
-Changes made via Lovable will be committed automatically to this repo.
+## 📋 Prerequisites
 
-**Use your preferred IDE**
+Before you begin, ensure you have the following installed:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **Node.js** (version 18.0.0 or higher)
+- **npm** (version 8.0.0 or higher) or **Bun** (recommended)
+- **Modern web browser** with WebRTC support (Chrome, Firefox, Safari, Edge)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🚀 Installation
 
-Follow these steps:
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd meeting-application
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+2. **Install dependencies**
+   ```bash
+   # Using npm
+   npm install
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+   # Using Bun (recommended)
+   bun install
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+3. **Start the development server**
+   ```bash
+   # Using npm
+   npm run dev
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+   # Using Bun
+   bun run dev
+   ```
+
+4. **Open your browser**
+   Navigate to `http://localhost:5173` to see the application.
+
+## 🔧 Environment Configuration
+
+This application runs entirely on the client side and doesn't require environment variables for basic functionality. However, for future enhancements, you may need:
+
+```env
+# Future environment variables (when backend is added)
+VITE_API_URL=your_api_url
+VITE_WEBSOCKET_URL=your_websocket_url
+VITE_TURN_SERVER_URL=your_turn_server_url
 ```
 
-**Edit a file directly in GitHub**
+## 💻 Local Development Setup
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Development Server
+```bash
+bun run dev
+```
+- Starts Vite development server
+- Hot module replacement enabled
+- Accessible at `http://localhost:5173`
 
-**Use GitHub Codespaces**
+### Type Checking
+```bash
+bun run type-check
+```
+- Runs TypeScript compiler in check mode
+- Validates all TypeScript files
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Linting
+```bash
+bun run lint
+```
+- Runs ESLint on all source files
+- Checks for code quality and consistency
 
-## What technologies are used for this project?
+### Building for Production
+```bash
+bun run build
+```
+- Creates optimized production build
+- Output directory: `dist/`
 
-This project is built with:
+### Preview Production Build
+```bash
+bun run preview
+```
+- Serves the production build locally
+- Useful for testing before deployment
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🧪 Testing
 
-## How can I deploy this project?
+Currently, the project uses manual testing. For automated testing setup:
 
-Simply open [Lovable](https://lovable.dev/projects/7e46ae54-5b92-41b5-8276-81f5fec4380a) and click on Share -> Publish.
+```bash
+# Install testing dependencies (when needed)
+bun add -D vitest @testing-library/react @testing-library/jest-dom
 
-## Can I connect a custom domain to my Lovable project?
+# Run tests (future command)
+bun run test
+```
 
-Yes, you can!
+## 📦 Build and Deployment
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Building the Application
+```bash
+bun run build
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+The build process:
+1. Compiles TypeScript to JavaScript
+2. Bundles all modules using Vite
+3. Optimizes assets and code splitting
+4. Generates static files in `dist/` directory
+
+### Deployment Options
+
+1. **Lovable Platform** (Current)
+   - Automatic deployment via Lovable
+   - Click "Publish" in the Lovable interface
+
+2. **Static Site Hosts**
+   ```bash
+   # Build the project
+   bun run build
+   
+   # Deploy to Vercel
+   vercel --prod
+   
+   # Deploy to Netlify
+   netlify deploy --prod --dir=dist
+   ```
+
+3. **Self-hosted**
+   - Serve the `dist/` folder with any static file server
+   - Nginx, Apache, or Node.js static server
+
+## 🤝 Contributing
+
+1. **Fork the repository**
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. **Make your changes**
+4. **Commit your changes**
+   ```bash
+   git commit -m 'Add some amazing feature'
+   ```
+5. **Push to the branch**
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+6. **Open a Pull Request**
+
+### Code Style Guidelines
+
+- Use TypeScript for all new files
+- Follow the existing code formatting
+- Use meaningful component and variable names
+- Add comments for complex logic
+- Ensure responsive design for new UI components
+
+### Component Guidelines
+
+- Create small, focused components
+- Use custom hooks for reusable logic
+- Follow the existing file structure
+- Include proper TypeScript types
+- Test components manually in different browsers
+
+## 📁 Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+│   ├── ui/             # Shadcn/ui components
+│   └── meeting/        # Meeting-specific components
+├── hooks/              # Custom React hooks
+├── pages/              # Page components
+├── types/              # TypeScript type definitions
+└── lib/                # Utility functions
+```
+
+## 🔧 Browser Support
+
+- **Chrome/Chromium**: Full support
+- **Firefox**: Full support
+- **Safari**: Full support (macOS/iOS)
+- **Edge**: Full support
+
+### WebRTC Requirements
+- Camera and microphone permissions
+- Secure context (HTTPS) for production
+- Modern browser with WebRTC support
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **Camera/Microphone not working**
+   - Check browser permissions
+   - Ensure secure context (HTTPS)
+   - Try refreshing the page
+
+2. **Build errors**
+   ```bash
+   # Clear dependencies and reinstall
+   rm -rf node_modules
+   bun install
+   ```
+
+3. **TypeScript errors**
+   ```bash
+   # Run type checking
+   bun run type-check
+   ```
+
+### Development Issues
+
+- **Hot reload not working**: Restart the dev server
+- **Port already in use**: Change port in `vite.config.ts`
+- **Module not found**: Check import paths and file extensions
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [React](https://reactjs.org/) - UI framework
+- [Vite](https://vitejs.dev/) - Build tool
+- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
+- [Shadcn/ui](https://ui.shadcn.com/) - UI components
+- [Radix UI](https://www.radix-ui.com/) - Headless UI primitives
+- [Lucide](https://lucide.dev/) - Icon library
+
+## 📞 Support
+
+For support and questions:
+- Create an issue in the repository
+- Check the [documentation](docs/)
+- Review the [troubleshooting guide](#-troubleshooting)
+
+---
+
+Built with ❤️ using modern web technologies
