@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 
 export function useMediaStream() {
@@ -18,9 +17,29 @@ export function useMediaStream() {
           video: true
         });
         setLocalStream(stream);
+        setError(null); // Clear any previous errors
       } catch (err) {
         console.error("Error accessing media devices:", err);
-        setError("Could not access camera or microphone. Please check your permissions.");
+        
+        // Handle specific error types
+        if (err instanceof DOMException) {
+          switch (err.name) {
+            case 'NotFoundError':
+              setError("No microphone or camera detected. Please connect a microphone and camera, then refresh the page.");
+              break;
+            case 'NotAllowedError':
+              setError("Camera and microphone access denied. Please allow permissions and refresh the page.");
+              break;
+            case 'NotReadableError':
+              setError("Camera or microphone is already in use by another application. Please close other applications and try again.");
+              break;
+            default:
+              setError("Could not access camera or microphone. Please check your permissions and devices.");
+          }
+        } else {
+          setError("Could not access camera or microphone. Please check your permissions and devices.");
+        }
+
         // Try to get at least audio
         try {
           const audioOnlyStream = await navigator.mediaDevices.getUserMedia({
@@ -29,9 +48,28 @@ export function useMediaStream() {
           });
           setLocalStream(audioOnlyStream);
           setIsVideoEnabled(false);
+          setError(null); // Clear error if audio-only succeeds
         } catch (audioErr) {
           console.error("Error accessing audio:", audioErr);
-          setError("Could not access microphone. Please check your permissions.");
+          
+          // Handle specific audio error types
+          if (audioErr instanceof DOMException) {
+            switch (audioErr.name) {
+              case 'NotFoundError':
+                setError("No microphone detected. Please connect a microphone and refresh the page to join the meeting with audio.");
+                break;
+              case 'NotAllowedError':
+                setError("Microphone access denied. Please allow microphone permissions and refresh the page.");
+                break;
+              case 'NotReadableError':
+                setError("Microphone is already in use by another application. Please close other applications and try again.");
+                break;
+              default:
+                setError("Could not access microphone. Please check your permissions and device.");
+            }
+          } else {
+            setError("Could not access microphone. Please check your permissions and device.");
+          }
         }
       }
     }
@@ -103,7 +141,22 @@ export function useMediaStream() {
       };
     } catch (err) {
       console.error("Error sharing screen:", err);
-      setError("Could not share screen. Please check your permissions.");
+      
+      // Handle specific screen sharing error types
+      if (err instanceof DOMException) {
+        switch (err.name) {
+          case 'NotAllowedError':
+            setError("Screen sharing permission denied. Please allow screen sharing to continue.");
+            break;
+          case 'NotFoundError':
+            setError("No screen available for sharing.");
+            break;
+          default:
+            setError("Could not share screen. Please check your permissions.");
+        }
+      } else {
+        setError("Could not share screen. Please check your permissions.");
+      }
     }
   }, [isScreenSharing, screenStream]);
 
