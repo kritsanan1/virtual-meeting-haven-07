@@ -1,40 +1,73 @@
-
 import React, { useRef, useEffect } from 'react';
-import { Mic, MicOff } from 'lucide-react';
+import { Mic, MicOff, Video, VideoOff } from 'lucide-react';
+
+interface ParticipantData {
+  sid: string;
+  identity: string;
+  isLocal: boolean;
+  audioEnabled: boolean;
+  videoEnabled: boolean;
+  tracks: Map<string, any>;
+}
 
 interface VideoPlayerProps {
-  stream: MediaStream | null;
-  isVideoEnabled: boolean;
-  isAudioEnabled: boolean;
+  participant: ParticipantData;
   isLocal: boolean;
-  name: string;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
-  stream,
-  isVideoEnabled,
-  isAudioEnabled,
+  participant,
   isLocal,
-  name,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    if (videoRef.current && stream) {
-      videoRef.current.srcObject = stream;
-    }
-  }, [stream]);
+    if (!participant.tracks) return;
 
-  const firstLetter = name.charAt(0).toUpperCase();
+    const videoTrackPublication = Array.from(participant.tracks.values()).find(
+      (trackPublication: any) => trackPublication.track && trackPublication.track.kind === 'video'
+    );
+
+    const audioTrackPublication = Array.from(participant.tracks.values()).find(
+      (trackPublication: any) => trackPublication.track && trackPublication.track.kind === 'audio'
+    );
+
+    // Attach video track
+    if (videoTrackPublication && videoTrackPublication.track && videoRef.current) {
+      const videoTrack = videoTrackPublication.track;
+      videoTrack.attach(videoRef.current);
+      
+      return () => {
+        videoTrack.detach();
+      };
+    }
+
+    // Attach audio track (only for remote participants)
+    if (!isLocal && audioTrackPublication && audioTrackPublication.track && audioRef.current) {
+      const audioTrack = audioTrackPublication.track;
+      audioTrack.attach(audioRef.current);
+      
+      return () => {
+        audioTrack.detach();
+      };
+    }
+  }, [participant.tracks, isLocal]);
+
+  const firstLetter = participant.identity.charAt(0).toUpperCase();
+  const hasVideoTrack = Array.from(participant.tracks.values()).some(
+    (trackPublication: any) => trackPublication.track && trackPublication.track.kind === 'video' && trackPublication.track.isEnabled
+  );
 
   return (
     <div className="video-container bg-gray-800 relative shadow-lg">
-      {stream && isVideoEnabled ? (
+      {hasVideoTrack && participant.videoEnabled ? (
         <video 
           ref={videoRef} 
           autoPlay 
           playsInline 
           muted={isLocal} // Mute local video to prevent feedback
+          className="w-full h-full object-cover"
         />
       ) : (
         <div className="flex items-center justify-center h-full">
@@ -44,17 +77,34 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         </div>
       )}
 
-      {/* Name badge and audio indicator */}
+      {/* Audio element for remote participants */}
+      {!isLocal && (
+        <audio ref={audioRef} autoPlay />
+      )}
+
+      {/* Name badge and status indicators */}
       <div className="absolute bottom-3 left-3 right-3 flex justify-between items-center">
-        <div className="bg-black bg-opacity-40 text-white text-sm px-2 py-1 rounded">
-          {name} {isLocal && "(You)"}
+        <div className="bg-black bg-opacity-60 text-white text-sm px-3 py-1 rounded-full">
+          {participant.identity} {isLocal && "(You)"}
         </div>
-        <div className="bg-black bg-opacity-40 p-1 rounded-full">
-          {isAudioEnabled ? (
-            <Mic size={16} className="text-white" />
-          ) : (
-            <MicOff size={16} className="text-meeting-danger" />
-          )}
+        <div className="flex gap-2">
+          {/* Audio indicator */}
+          <div className={`p-2 rounded-full ${participant.audioEnabled ? 'bg-green-600' : 'bg-red-600'} bg-opacity-80`}>
+            {participant.audioEnabled ? (
+              <Mic size={14} className="text-white" />
+            ) : (
+              <MicOff size={14} className="text-white" />
+            )}
+          </div>
+          
+          {/* Video indicator */}
+          <div className={`p-2 rounded-full ${participant.videoEnabled ? 'bg-green-600' : 'bg-red-600'} bg-opacity-80`}>
+            {participant.videoEnabled ? (
+              <Video size={14} className="text-white" />
+            ) : (
+              <VideoOff size={14} className="text-white" />
+            )}
+          </div>
         </div>
       </div>
     </div>
